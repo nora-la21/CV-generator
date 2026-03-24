@@ -58,14 +58,14 @@ function skillsTable(rows) {
     right: { style: BorderStyle.SINGLE, size: 4, color: 'DDDDDD' },
   };
   return new Table({
-    width: { size: CONTENT_W, type: WidthType.DXA },
+    width: { size: 100, type: WidthType.PERCENTAGE },
     layout: TableLayoutType.FIXED,
     columnWidths: [col1, col2],
     rows: rows.map(row =>
       new TableRow({
         children: [
           new TableCell({
-            width: { size: col1, type: WidthType.DXA },
+            width: { size: 26, type: WidthType.PERCENTAGE },
             shading: { type: ShadingType.CLEAR, fill: 'F5F5F5' },
             borders: cellBorders,
             children: [new Paragraph({
@@ -74,7 +74,7 @@ function skillsTable(rows) {
             })],
           }),
           new TableCell({
-            width: { size: col2, type: WidthType.DXA },
+            width: { size: 74, type: WidthType.PERCENTAGE },
             borders: cellBorders,
             children: [new Paragraph({
               children: [new TextRun({ text: row.items, size: 20, font: FONT })],

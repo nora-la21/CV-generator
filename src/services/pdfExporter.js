@@ -7,7 +7,7 @@ const MUTED = '#666666';
 const TABLE_BG = '#F5F5F5';
 const LINE_COLOR = '#CCCCCC';
 
-async function loadLogoDataUrl(logoUrl) {
+async function loadLogo(logoUrl) {
   if (!logoUrl) return null;
   const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
   if (ext === 'svg') return null;
@@ -19,7 +19,7 @@ async function loadLogoDataUrl(logoUrl) {
         canvas.width = img.naturalWidth;
         canvas.height = img.naturalHeight;
         canvas.getContext('2d').drawImage(img, 0, 0);
-        resolve(canvas.toDataURL('image/jpeg', 0.95));
+        resolve({ dataUrl: canvas.toDataURL('image/jpeg', 0.95), w: img.naturalWidth, h: img.naturalHeight });
       } catch {
         resolve(null);
       }
@@ -42,11 +42,14 @@ export async function exportPDF(cvData, template) {
   const accent = template.accentColor || ACCENT;
 
   // ── Logo / company name ────────────────────────────
-  const logoDataUrl = await loadLogoDataUrl(template.logoUrl);
-  if (logoDataUrl) {
-    const logoW = 100;
-    const logoH = 34;
-    doc.addImage(logoDataUrl, 'JPEG', pageW - marginR - logoW, y, logoW, logoH);
+  const logo = await loadLogo(template.logoUrl);
+  if (logo) {
+    const maxW = 120;
+    const maxH = 40;
+    const ratio = Math.min(maxW / logo.w, maxH / logo.h);
+    const logoW = logo.w * ratio;
+    const logoH = logo.h * ratio;
+    doc.addImage(logo.dataUrl, 'JPEG', pageW - marginR - logoW, y, logoW, logoH);
   } else {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
