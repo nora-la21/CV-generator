@@ -1,7 +1,7 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   WidthType, BorderStyle, AlignmentType, ImageRun, Header, Footer,
-  ShadingType, TableLayoutType, convertInchesToTwip,
+  ShadingType, TableLayoutType, convertInchesToTwip, TabStopType,
 } from 'docx';
 
 const FONT = 'Calibri';
@@ -24,7 +24,7 @@ async function getLogoImageRun(logoUrl, isQarea = false) {
     const type = ext === 'jpg' ? 'jpeg' : ext;
     return new ImageRun({
       data: arrayBuffer,
-      transformation: { width: isQarea ? 220 : 180, height: isQarea ? 82 : 65 },
+      transformation: { width: isQarea ? 160 : 180, height: isQarea ? 48 : 65 },
       type,
     });
   } catch {
@@ -103,46 +103,25 @@ export async function exportDOCX(cvData, template) {
     spacing: { before: 0, after: 100 },
   });
 
-  // Footer
-  const noBorder = { style: BorderStyle.NONE };
-  const halfW = Math.round(CONTENT_W / 2);
+  // Footer — single paragraph with right tab stop (avoids table cell sizing bugs)
+  const leftText = template.footerLeft || template.displayName;
+  const rightParts = [
+    ...(template.id === 'qarea' ? [template.website, template.email] : []),
+    ...(template.id !== 'qarea' && template.website ? [template.website] : []),
+    ...(template.id !== 'qarea' && template.email ? [template.email] : []),
+    ...(template.phone ? template.phone.split('\n').map(p => p.trim()) : []),
+  ].filter(Boolean);
 
-  const footerLeftChildren = [
+  const footerChildren = [
     new Paragraph({
-      children: [new TextRun({
-        text: template.footerLeft || template.displayName,
-        bold: true,
-        size: 18,
-        color: template.footerLeft ? '333333' : color,
-        font: FONT,
-      })],
+      tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_W }],
+      children: [
+        new TextRun({ text: leftText, bold: true, size: 18, color: '333333', font: FONT }),
+        new TextRun({ text: '\t', size: 18, font: FONT }),
+        new TextRun({ text: rightParts.join('   '), size: 16, color: template.id === 'qarea' ? '1a6fc4' : color, font: FONT }),
+      ],
     }),
-    ...(template.website ? [new Paragraph({
-      children: [new TextRun({ text: template.website, size: 16, color, font: FONT })],
-    })] : []),
   ];
-
-  const rightLines = [
-    ...(template.email ? [template.email] : []),
-    ...(template.phone ? template.phone.split('\n') : []),
-  ];
-  const footerRightChildren = rightLines.length
-    ? rightLines.map(line => new Paragraph({
-        alignment: AlignmentType.RIGHT,
-        children: [new TextRun({ text: line.trim(), size: 16, color, font: FONT })],
-      }))
-    : [new Paragraph({ children: [] })];
-
-  const footerLeft = new TableCell({
-    width: { size: halfW, type: WidthType.DXA },
-    borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder },
-    children: footerLeftChildren,
-  });
-  const footerRight = new TableCell({
-    width: { size: halfW, type: WidthType.DXA },
-    borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder },
-    children: footerRightChildren,
-  });
 
   const docChildren = [
     new Paragraph({
@@ -232,11 +211,7 @@ export async function exportDOCX(cvData, template) {
             ...(template.confidentialText ? [new Paragraph({
               children: [new TextRun({ text: template.confidentialText, size: 16, font: FONT })],
             })] : []),
-            new Table({
-              width: { size: CONTENT_W, type: WidthType.DXA },
-              borders: { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder, insideH: noBorder, insideV: noBorder },
-              rows: [new TableRow({ children: [footerLeft, footerRight] })],
-            }),
+            ...footerChildren,
           ],
         }),
       },
