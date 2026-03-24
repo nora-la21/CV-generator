@@ -208,6 +208,19 @@ export async function exportDOCX(cvData, template) {
       ...sec.bullets.map(b => bulletParagraph(b, accentHex(template))),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ]),
+    ...(cvData.languages?.length ? [
+      sectionHeading('COMMUNICATION SKILLS'),
+      ...cvData.languages.map(l => new Paragraph({
+        children: [
+          new TextRun({ text: '● ', color: accentHex(template), size: 20, font: FONT }),
+          new TextRun({ text: `${l.language}: `, bold: true, size: 20, font: FONT }),
+          new TextRun({ text: `${l.level}.`, size: 20, font: FONT }),
+        ],
+        indent: { left: 360, hanging: 360 },
+        spacing: { after: 60 },
+      })),
+      new Paragraph({ children: [], spacing: { after: 200 } }),
+    ] : []),
   ];
 
   const doc = new Document({

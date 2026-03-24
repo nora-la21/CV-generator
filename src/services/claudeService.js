@@ -42,12 +42,17 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown code blocks, no extra text
   ],
   "additionalSections": [
     { "title": "CERTIFICATIONS", "bullets": ["AWS Certified Developer – 2022"] }
+  ],
+  "languages": [
+    { "language": "English", "level": "Upper-Intermediate" },
+    { "language": "Ukrainian", "level": "Native" }
   ]
 }
 
 IMPORTANT RULES:
 - Use first name + last name initial only (e.g., "John D.") — never full last name
 - Keep "additionalSections" as empty array [] if no extra sections exist
+- Keep "languages" as empty array [] if no languages are mentioned in the CV
 - Keep "education" as empty array [] if not present in the original CV
 - Keep "projects" as empty array [] if no project/experience details exist in the original CV
 - Extract all projects from the EXPERIENCE section of the original CV into "projects"

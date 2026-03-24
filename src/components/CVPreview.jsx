@@ -95,6 +95,17 @@ export default function CVPreview({ cvData, company, loading }) {
           </div>
         ))}
 
+        {cvData.languages?.length > 0 && (
+          <div>
+            <div className="cv-section-heading">Communication Skills</div>
+            <ul className="cv-bullets">
+              {cvData.languages.map((l, i) => (
+                <li key={i}><strong>{l.language}:</strong> {l.level}.</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="cv-doc-footer">
           <div>
             {t.confidentialText && <div style={{ color: '#999', fontSize: 10, marginBottom: 2 }}>{t.confidentialText}</div>}

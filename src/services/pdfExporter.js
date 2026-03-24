@@ -199,6 +199,27 @@ export async function exportPDF(cvData, template) {
     y += 6;
   }
 
+  // ── Communication Skills (Languages) ──────────────
+  if (cvData.languages?.length) {
+    checkPageBreak(30);
+    sectionHead('COMMUNICATION SKILLS');
+    for (const l of cvData.languages) {
+      checkPageBreak(16);
+      doc.setFontSize(10);
+      doc.setTextColor(accent);
+      doc.text('•', marginL + 4, y);
+      doc.setTextColor(BLACK);
+      doc.setFont('helvetica', 'bold');
+      const label = `${l.language}: `;
+      doc.text(label, marginL + 14, y);
+      const labelW = doc.getTextWidth(label);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${l.level}.`, marginL + 14 + labelW, y);
+      y += 16;
+    }
+    y += 6;
+  }
+
   // ── Footer (last page) ────────────────────────────
   const totalPages = doc.internal.getNumberOfPages();
   for (let p = 1; p <= totalPages; p++) {
