@@ -6,7 +6,7 @@ export const TEMPLATES = {
     accentColor: '#E8352A',
     footerLeft: 'by QAREA',
     website: 'www.qarea.com',
-    email: 'business@qarea.com',
+    email: 'contact@qarea.com',
     phone: null,
     confidentialText: null,
   },
