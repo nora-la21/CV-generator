@@ -44,8 +44,8 @@ export async function exportPDF(cvData, template) {
   // ── Logo / company name ────────────────────────────
   const logo = await loadLogo(template.logoUrl);
   if (logo) {
-    const maxW = 180;
-    const maxH = 65;
+    const maxW = template.id === 'qarea' ? 220 : 180;
+    const maxH = template.id === 'qarea' ? 82 : 65;
     const ratio = Math.min(maxW / logo.w, maxH / logo.h);
     const logoW = logo.w * ratio;
     const logoH = logo.h * ratio;
@@ -62,14 +62,14 @@ export async function exportPDF(cvData, template) {
     doc.setDrawColor('#E8352A');
     doc.setLineWidth(9);
     doc.setLineCap(1); // round
-    // M 0 68 C 120 -3 330 -3 460 6  (absolute coords)
-    doc.lines([[120, -71, 330, -71, 460, -62]], 0, 68, [1, 1], 'S');
+    // M 0 82 C 110 5 310 2 440 6
+    doc.lines([[110, -77, 310, -80, 440, -76]], 0, 82, [1, 1], 'S');
     doc.setLineCap(0);
     doc.setLineWidth(0.5);
     doc.setDrawColor(LINE_COLOR);
   }
 
-  y += 50;
+  y += 62;
 
   // ── Name ──────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
@@ -265,12 +265,13 @@ export async function exportPDF(cvData, template) {
         doc.text(qaLinks[i], rx, fy, { align: 'right' });
         rx -= doc.getTextWidth(qaLinks[i]) + 18;
       }
-      // Gray arc decoration at bottom
+      // Gray arc decoration at bottom — quarter-circle: vertical entry, horizontal exit
       doc.setDrawColor('#CCCCCC');
-      doc.setLineWidth(60);
+      doc.setLineWidth(58);
       doc.setLineCap(1);
-      // M 165 852 C 268 872 490 822 625 790  (absolute, pageH=842)
-      doc.lines([[103, 20, 325, -30, 460, -62]], 165, pageH + 10, [1, 1], 'S');
+      // M 228 (pageH+15) C 228 (pageH+42) 575 (pageH-28) 630 (pageH-28)
+      const arcY = pageH + 15;
+      doc.lines([[0, 27, 347, -43, 402, -43]], 228, arcY, [1, 1], 'S');
       doc.setLineCap(0);
       doc.setLineWidth(0.5);
       doc.setDrawColor(LINE_COLOR);

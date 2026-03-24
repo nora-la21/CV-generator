@@ -13,7 +13,7 @@ function accentHex(template) {
   return template.accentColor.replace('#', '');
 }
 
-async function getLogoImageRun(logoUrl) {
+async function getLogoImageRun(logoUrl, isQarea = false) {
   if (!logoUrl) return null;
   const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
   if (ext === 'svg') return null;
@@ -24,7 +24,7 @@ async function getLogoImageRun(logoUrl) {
     const type = ext === 'jpg' ? 'jpeg' : ext;
     return new ImageRun({
       data: arrayBuffer,
-      transformation: { width: 180, height: 65 },
+      transformation: { width: isQarea ? 220 : 180, height: isQarea ? 82 : 65 },
       type,
     });
   } catch {
@@ -94,7 +94,7 @@ export async function exportDOCX(cvData, template) {
   const color = accentHex(template);
 
   // Header — logo if available, else company name text
-  const logoRun = await getLogoImageRun(template.logoUrl);
+  const logoRun = await getLogoImageRun(template.logoUrl, template.id === 'qarea');
   const headerPara = new Paragraph({
     alignment: AlignmentType.RIGHT,
     children: logoRun

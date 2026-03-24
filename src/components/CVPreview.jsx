@@ -29,14 +29,14 @@ export default function CVPreview({ cvData, company, loading }) {
     <div className="cv-preview-card">
       <div className="cv-document">
         {isQarea ? (
-          <div style={{ margin: '-48px -56px 24px', height: 90, position: 'relative', overflow: 'hidden' }}>
-            <svg viewBox="0 0 595 90" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-              <path d="M 0 68 C 120 -3 330 -3 460 6" fill="none" stroke="#E8352A" strokeWidth="9" strokeLinecap="round"/>
+          <div style={{ margin: '-48px -56px 24px', height: 105, position: 'relative', overflow: 'hidden' }}>
+            <svg viewBox="0 0 595 105" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+              <path d="M 0 82 C 110 5 310 2 440 6" fill="none" stroke="#E8352A" strokeWidth="9" strokeLinecap="round"/>
             </svg>
             <img
               src={import.meta.env.BASE_URL + t.logoUrl}
               alt={t.displayName}
-              style={{ position: 'absolute', top: 13, right: 20, height: 64, width: 'auto' }}
+              style={{ position: 'absolute', top: 10, right: 20, height: 85, width: 'auto' }}
               onError={(e) => { e.target.style.display = 'none'; }}
             />
           </div>
@@ -123,15 +123,15 @@ export default function CVPreview({ cvData, company, loading }) {
 
         {isQarea ? (
           <div style={{ margin: '48px -56px -48px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ padding: '12px 56px 10px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: '#555' }}>
+            <div style={{ padding: '14px 56px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, color: '#333' }}>
               <div>by <strong style={{ color: '#1a1a1a' }}>QAREA</strong></div>
-              <div style={{ display: 'flex', gap: 16 }}>
+              <div style={{ display: 'flex', gap: 20 }}>
                 {t.website && <a href={`https://${t.website}`} target="_blank" rel="noreferrer" style={{ color: '#1a6fc4' }}>{t.website}</a>}
                 {t.email && <a href={`mailto:${t.email}`} style={{ color: '#1a6fc4' }}>{t.email}</a>}
               </div>
             </div>
-            <svg viewBox="0 0 595 88" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 88, overflow: 'visible' }}>
-              <path d="M 165 96 C 268 115 490 70 625 38" fill="none" stroke="#CCCCCC" strokeWidth="65" strokeLinecap="round"/>
+            <svg viewBox="0 0 595 90" style={{ display: 'block', width: '100%', height: 90, overflow: 'visible' }}>
+              <path d="M 228 105 C 228 132 575 42 630 42" fill="none" stroke="#CCCCCC" strokeWidth="58" strokeLinecap="round"/>
             </svg>
           </div>
         ) : (
