@@ -152,7 +152,7 @@ export default function App() {
           </section>
         )}
       </main>
-      <span className="hero-credit">made by Nora Laievska</span>
+      <footer className="site-footer">made by Nora Laievska</footer>
     </div>
   );
 }
