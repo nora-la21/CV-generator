@@ -83,5 +83,9 @@ export async function processCV(apiKey, cvText, instructions, referenceText = ''
     .replace(/```\s*$/i, '')
     .trim();
 
-  return JSON.parse(text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error('Could not parse the AI response. Try providing more detailed instructions or a full job description.');
+  }
 }

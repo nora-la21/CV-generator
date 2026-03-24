@@ -75,6 +75,7 @@ export default function App() {
     if (!apiKey) { setGenerateError('Enter your Anthropic API key in the top bar first.'); return; }
     if (!cvText) { setGenerateError('Please upload a CV first.'); return; }
     if (!instructions.trim()) { setGenerateError('Please paste a job description or write instructions.'); return; }
+    if (instructions.trim().length < 20) { setGenerateError('Instructions are too short — please paste a job description or write at least a sentence.'); return; }
     setGenerateError('');
     setGenerating(true);
     setCvData(null);
