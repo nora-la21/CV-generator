@@ -1,9 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="255" height="72" viewBox="0 0 255 72">
-  <!-- Shield: flat left/bottom, angular notch top-right, tapers to rounded bottom point -->
-  <path d="M4 5 L48 5 L60 17 L60 40 Q60 58 32 68 Q4 58 4 40 Z"
-        fill="none" stroke="#E8352A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
-  <!-- TEST in bold black -->
-  <text x="72" y="49" font-family="Arial Black,Arial,sans-serif" font-size="34" font-weight="900" fill="#1a1a1a">TEST</text>
-  <!-- FORT in bold red -->
-  <text x="155" y="49" font-family="Arial Black,Arial,sans-serif" font-size="34" font-weight="900" fill="#E8352A">FORT</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="210" height="76" viewBox="0 0 210 76">
+  <!-- Shield outline — open gap at top-right (distinctive design element) -->
+  <!-- Main body: left side, bottom, right side -->
+  <path d="M 7,20 Q 7,6 20,6 L 48,6"
+        fill="none" stroke="#E8352A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 60,6 L 70,16 L 70,46 Q 70,63 38,74 Q 6,63 6,46 L 6,20"
+        fill="none" stroke="#E8352A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- TEST in black -->
+  <text x="8" y="52" font-family="Arial Black,Arial,sans-serif" font-size="29" font-weight="900" fill="#1a1a1a">TEST</text>
+  <!-- FORT in red -->
+  <text x="84" y="52" font-family="Arial Black,Arial,sans-serif" font-size="29" font-weight="900" fill="#E8352A">FORT</text>
 </svg>
