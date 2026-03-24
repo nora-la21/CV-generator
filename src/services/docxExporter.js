@@ -40,10 +40,13 @@ function sectionHeading(text) {
   });
 }
 
-function bulletParagraph(text) {
+function bulletParagraph(text, accentColor = 'E8352A') {
   return new Paragraph({
-    bullet: { level: 0 },
-    children: [new TextRun({ text, size: 20, font: FONT })],
+    children: [
+      new TextRun({ text: '● ', color: accentColor, size: 20, font: FONT }),
+      new TextRun({ text, size: 20, font: FONT }),
+    ],
+    indent: { left: 360, hanging: 360 },
     spacing: { after: 60 },
   });
 }
@@ -151,18 +154,19 @@ export async function exportDOCX(cvData, template) {
       spacing: { after: 240 },
     }),
     sectionHeading('GENERAL QUALIFICATION'),
-    ...(cvData.summary || []).map(l => bulletParagraph(l)),
+    ...(cvData.summary || []).map(l => bulletParagraph(l, accentHex(template))),
     new Paragraph({ children: [], spacing: { after: 120 } }),
     ...(cvData.skillsTable?.length ? [skillsTable(cvData.skillsTable), new Paragraph({ children: [], spacing: { after: 200 } })] : []),
     ...(cvData.employmentHistory?.length ? [
       sectionHeading('EMPLOYMENT HISTORY'),
       ...cvData.employmentHistory.map(job =>
         new Paragraph({
-          bullet: { level: 0 },
           children: [
+            new TextRun({ text: '● ', color: accentHex(template), size: 20, font: FONT }),
             new TextRun({ text: job.period ? `${job.period}, ` : '', bold: true, size: 20, font: FONT }),
             new TextRun({ text: job.role, size: 20, font: FONT }),
           ],
+          indent: { left: 360, hanging: 360 },
           spacing: { after: 60 },
         })
       ),
@@ -170,7 +174,7 @@ export async function exportDOCX(cvData, template) {
     ] : []),
     ...(cvData.education?.length ? [
       sectionHeading('EDUCATION'),
-      ...cvData.education.map(e => bulletParagraph(e)),
+      ...cvData.education.map(e => bulletParagraph(e, accentHex(template))),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
     ...(cvData.projects?.length ? [
@@ -201,7 +205,7 @@ export async function exportDOCX(cvData, template) {
     ] : []),
     ...(cvData.additionalSections || []).flatMap(sec => [
       sectionHeading(sec.title.toUpperCase()),
-      ...sec.bullets.map(b => bulletParagraph(b)),
+      ...sec.bullets.map(b => bulletParagraph(b, accentHex(template))),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ]),
   ];

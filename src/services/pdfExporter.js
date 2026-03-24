@@ -90,8 +90,9 @@ export async function exportPDF(cvData, template) {
   function bullet(text, indent = 14) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
-    doc.setTextColor(BLACK);
+    doc.setTextColor(accent);
     doc.text('•', marginL + indent - 10, y);
+    doc.setTextColor(BLACK);
     const lines = doc.splitTextToSize(text, contentW - indent);
     doc.text(lines, marginL + indent, y);
     y += lines.length * 14 + 2;
@@ -160,8 +161,9 @@ export async function exportPDF(cvData, template) {
       checkPageBreak(20);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
-      doc.setTextColor(BLACK);
+      doc.setTextColor(accent);
       doc.text('•', marginL + 4, y);
+      doc.setTextColor(BLACK);
       if (job.period) {
         doc.setFont('helvetica', 'bold');
         doc.text(`${job.period}, `, marginL + 14, y);
