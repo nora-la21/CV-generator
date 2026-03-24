@@ -51,13 +51,14 @@ export default function App() {
   async function handleGenerate() {
     if (!apiKey) { setGenerateError('Enter your Anthropic API key in the top bar first.'); return; }
     if (!cvText) { setGenerateError('Please upload a CV first.'); return; }
-    if (!instructions.trim()) { setGenerateError('Please paste a job description or write instructions.'); return; }
-    if (instructions.trim().length < 20) { setGenerateError('Instructions are too short — please paste a job description or write at least a sentence.'); return; }
+    const templateName = company === 'qarea' ? 'QArea' : 'TestFort';
+    const effectiveInstructions = instructions.trim() ||
+      `Format this CV for the ${templateName} company template. Keep all existing content exactly as-is — do not add, remove, or change any information. Just parse and structure it into the required JSON format.`;
     setGenerateError('');
     setGenerating(true);
     setCvData(null);
     try {
-      const data = await processCV(apiKey, cvText, instructions);
+      const data = await processCV(apiKey, cvText, effectiveInstructions);
       setCvData(data);
     } catch (err) {
       const msg = err.status === 401
@@ -69,7 +70,7 @@ export default function App() {
     }
   }
 
-  const canGenerate = !!apiKey && !!cvText && !!instructions.trim() && !parsing && !generating;
+  const canGenerate = !!apiKey && !!cvText && !parsing && !generating;
 
   const step1done = !!cvText;
   const step2done = !!instructions.trim();
@@ -102,7 +103,7 @@ export default function App() {
         </div>
         <div className="step-sep" />
         <div className={`step${step2done ? ' done' : ''}`}>
-          <span className="step-num">2</span> Paste the job description
+          <span className="step-num">2</span> Paste job description <em style={{ fontWeight: 400, opacity: 0.6 }}>(optional)</em>
         </div>
         <div className="step-sep" />
         <div className={`step${step3done ? ' done' : ''}`}>
