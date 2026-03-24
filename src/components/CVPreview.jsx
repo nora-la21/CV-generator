@@ -29,7 +29,7 @@ export default function CVPreview({ cvData, company, loading }) {
       <div className="cv-document">
         <div className="cv-doc-header">
           <img
-            src={t.logoUrl}
+            src={import.meta.env.BASE_URL + t.logoUrl}
             alt={t.displayName}
             style={{ maxHeight: 44, width: 'auto' }}
             onError={(e) => { e.target.style.display = 'none'; }}
