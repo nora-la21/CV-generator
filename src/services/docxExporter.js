@@ -1,7 +1,7 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   WidthType, BorderStyle, AlignmentType, ImageRun, Header, Footer,
-  ShadingType, convertInchesToTwip,
+  ShadingType, TableLayoutType, convertInchesToTwip,
 } from 'docx';
 
 const FONT = 'Calibri';
@@ -59,6 +59,7 @@ function skillsTable(rows) {
   };
   return new Table({
     width: { size: CONTENT_W, type: WidthType.DXA },
+    layout: TableLayoutType.FIXED,
     rows: rows.map(row =>
       new TableRow({
         children: [
