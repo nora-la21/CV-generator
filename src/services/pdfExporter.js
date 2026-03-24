@@ -61,23 +61,23 @@ export async function exportPDF(cvData, template) {
 
   // ── Name ──────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(26);
+  doc.setFontSize(34);
   doc.setTextColor(BLACK);
   doc.text(cvData.name, marginL, y);
-  y += 36;
+  y += 44;
 
   // ── Title ─────────────────────────────────────────
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(13);
+  doc.setFontSize(16);
   doc.setTextColor(accent);
   doc.text(cvData.title, marginL, y);
-  y += 28;
+  y += 32;
 
   // ── Helper: section heading ────────────────────────
   function sectionHead(title) {
     y += 14;
     doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
+    doc.setFontSize(13);
     doc.setTextColor(BLACK);
     doc.text(title, marginL, y);
     y += 4;

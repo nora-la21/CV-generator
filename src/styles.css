@@ -137,9 +137,9 @@ body { font-family: var(--sans); background: var(--cream); color: var(--text); -
 .cv-doc-header { display: flex; justify-content: flex-end; margin-bottom: 20px; }
 .cv-doc-header img { height: 64px; width: auto; object-fit: contain; }
 .cv-doc-header .logo-fallback { font-size: 20px; font-weight: 700; color: #E8352A; }
-.cv-candidate-name { font-size: 32px; font-weight: 700; color: #000; margin-bottom: 4px; }
-.cv-candidate-title { font-size: 15px; font-weight: 700; margin-bottom: 24px; }
-.cv-section-heading { font-size: 12px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 0.6px; padding-bottom: 5px; border-bottom: 1px solid #ccc; margin-bottom: 18px; margin-top: 30px; }
+.cv-candidate-name { font-size: 44px; font-weight: 700; color: #000; margin-bottom: 4px; }
+.cv-candidate-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+.cv-section-heading { font-size: 14px; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 0.6px; padding-bottom: 5px; border-bottom: 1px solid #ccc; margin-bottom: 18px; margin-top: 30px; }
 .cv-bullets { padding-left: 18px; margin-bottom: 18px; }
 .cv-bullets li { margin-bottom: 4px; font-size: 12px; }
 .cv-bullets li::marker { color: #E8352A; }

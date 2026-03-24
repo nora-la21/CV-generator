@@ -34,7 +34,7 @@ async function getLogoImageRun(logoUrl, isQarea = false) {
 
 function sectionHeading(text) {
   return new Paragraph({
-    children: [new TextRun({ text, bold: true, size: 22, font: FONT, color: '000000' })],
+    children: [new TextRun({ text, bold: true, size: 26, font: FONT, color: '000000' })],
     spacing: { before: 400, after: 200 },
     border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'CCCCCC' } },
   });
@@ -146,11 +146,11 @@ export async function exportDOCX(cvData, template) {
 
   const docChildren = [
     new Paragraph({
-      children: [new TextRun({ text: cvData.name, bold: true, size: 52, font: FONT, color: '000000' })],
+      children: [new TextRun({ text: cvData.name, bold: true, size: 68, font: FONT, color: '000000' })],
       spacing: { before: 200, after: 80 },
     }),
     new Paragraph({
-      children: [new TextRun({ text: cvData.title, bold: true, size: 24, font: FONT, color })],
+      children: [new TextRun({ text: cvData.title, bold: true, size: 32, font: FONT, color })],
       spacing: { after: 240 },
     }),
     sectionHeading('GENERAL QUALIFICATION'),
