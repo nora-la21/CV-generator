@@ -44,8 +44,8 @@ export async function exportPDF(cvData, template) {
   // ── Logo / company name ────────────────────────────
   const logo = await loadLogo(template.logoUrl);
   if (logo) {
-    const maxW = 120;
-    const maxH = 40;
+    const maxW = 180;
+    const maxH = 65;
     const ratio = Math.min(maxW / logo.w, maxH / logo.h);
     const logoW = logo.w * ratio;
     const logoH = logo.h * ratio;
