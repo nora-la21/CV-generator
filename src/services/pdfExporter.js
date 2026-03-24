@@ -9,6 +9,8 @@ const LINE_COLOR = '#CCCCCC';
 
 async function loadLogoDataUrl(logoUrl) {
   if (!logoUrl) return null;
+  const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
+  if (ext === 'svg') return null; // jsPDF doesn't support SVG images
   try {
     const res = await fetch(logoUrl);
     const blob = await res.blob();
