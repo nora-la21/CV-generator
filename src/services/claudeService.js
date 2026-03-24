@@ -53,7 +53,8 @@ IMPORTANT RULES:
 - Extract all projects from the EXPERIENCE section of the original CV into "projects"
 - Each project must have: name, environment, description, responsibilities, testingTypes
 - Preserve the candidate's authentic voice and real experience
-- skillsTable rows should use category labels ending with colon (e.g., "Backend:")`;
+- skillsTable rows should use category labels ending with colon (e.g., "Backend:")
+- CRITICAL: all string values must be valid JSON — no unescaped quotes, no literal newlines inside strings`;
 
 export async function processCV(apiKey, cvText, instructions, referenceText = '') {
   const client = new Anthropic({
@@ -77,15 +78,25 @@ export async function processCV(apiKey, cvText, instructions, referenceText = ''
     ],
   });
 
-  const text = message.content[0].text.trim()
+  let text = message.content[0].text.trim()
     .replace(/^```json\s*/i, '')
     .replace(/^```\s*/i, '')
     .replace(/```\s*$/i, '')
     .trim();
 
+  // Try direct parse first
   try {
     return JSON.parse(text);
   } catch {
+    // Extract the outermost {...} block in case there's surrounding text
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      try {
+        return JSON.parse(match[0]);
+      } catch {
+        // fall through to error
+      }
+    }
     throw new Error('Could not parse the AI response. Try providing more detailed instructions or a full job description.');
   }
 }
