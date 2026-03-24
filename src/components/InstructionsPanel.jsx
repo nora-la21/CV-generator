@@ -11,8 +11,7 @@ export default function InstructionsPanel({ value, onChange, disabled }) {
         placeholder="Paste a job description to tailor this CV to that role, or write specific instructions — e.g.:&#10;• 'Add more emphasis on leadership skills'&#10;• 'Reorder sections — put Education first'&#10;• 'Include a short professional summary'"
       />
       <p className="instructions-hint">
-        Job description? The AI will embed required skills organically.
-        Direct instructions? Changes are applied as specified.
+        Job description? Skills are embedded organically. Direct instructions? Changes applied as written.
       </p>
     </div>
   );

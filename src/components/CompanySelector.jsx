@@ -13,26 +13,16 @@ export default function CompanySelector({ selected, onChange }) {
             key={c.id}
             className={`company-btn${selected === c.id ? ' active' : ''}`}
             onClick={() => onChange(c.id)}
-            title={c.label}
           >
-            <LogoOrFallback src={c.logo} alt={c.label} label={c.label} />
+            <img
+              src={c.logo}
+              alt={c.label}
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
             <span>{c.label}</span>
           </button>
         ))}
       </div>
     </div>
-  );
-}
-
-function LogoOrFallback({ src, alt, label }) {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      onError={(e) => {
-        e.target.style.display = 'none';
-        e.target.nextSibling && (e.target.nextSibling.style.display = 'block');
-      }}
-    />
   );
 }

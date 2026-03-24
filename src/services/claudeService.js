@@ -1,6 +1,4 @@
-const Anthropic = require('@anthropic-ai/sdk');
-
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+import Anthropic from '@anthropic-ai/sdk';
 
 const SYSTEM_PROMPT = `You are an expert CV/resume editor. Your task is to modify a candidate's CV based on provided instructions.
 
@@ -40,37 +38,34 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown code blocks, no extra text
 
 IMPORTANT RULES:
 - Use first name + last name initial only (e.g., "John D.") — never full last name
-- Keep "additionalSections" empty array [] if no extra sections
+- Keep "additionalSections" as empty array [] if no extra sections exist
 - Keep "education" as empty array [] if not present in the original CV
 - Preserve the candidate's authentic voice and real experience
 - skillsTable rows should use category labels ending with colon (e.g., "Backend:")`;
 
-async function processCV(cvText, instructions) {
-  const userMessage = `ORIGINAL CV:
-${cvText}
-
-INSTRUCTIONS:
-${instructions}
-
-Apply the instructions to the CV and return the result as JSON.`;
+export async function processCV(apiKey, cvText, instructions) {
+  const client = new Anthropic({
+    apiKey,
+    dangerouslyAllowBrowser: true,
+  });
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 4096,
     system: SYSTEM_PROMPT,
-    messages: [{ role: 'user', content: userMessage }],
+    messages: [
+      {
+        role: 'user',
+        content: `ORIGINAL CV:\n${cvText}\n\nINSTRUCTIONS:\n${instructions}\n\nApply the instructions and return the result as JSON.`,
+      },
+    ],
   });
 
-  const responseText = message.content[0].text.trim();
-
-  // Strip markdown code blocks if present
-  const jsonStr = responseText
+  const text = message.content[0].text.trim()
     .replace(/^```json\s*/i, '')
     .replace(/^```\s*/i, '')
     .replace(/```\s*$/i, '')
     .trim();
 
-  return JSON.parse(jsonStr);
+  return JSON.parse(text);
 }
-
-module.exports = { processCV };

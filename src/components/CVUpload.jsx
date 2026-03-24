@@ -5,13 +5,7 @@ export default function CVUpload({ onUpload, filename, loading }) {
   const [dragOver, setDragOver] = useState(false);
 
   function handleFiles(files) {
-    if (files && files[0]) onUpload(files[0]);
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-    setDragOver(false);
-    handleFiles(e.dataTransfer.files);
+    if (files?.[0]) onUpload(files[0]);
   }
 
   return (
@@ -22,14 +16,9 @@ export default function CVUpload({ onUpload, filename, loading }) {
         onClick={() => !loading && inputRef.current.click()}
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
-        onDrop={handleDrop}
+        onDrop={(e) => { e.preventDefault(); setDragOver(false); handleFiles(e.dataTransfer.files); }}
       >
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".pdf,.doc,.docx"
-          onChange={(e) => handleFiles(e.target.files)}
-        />
+        <input ref={inputRef} type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFiles(e.target.files)} />
         {filename ? (
           <>
             <div className="upload-icon">✅</div>

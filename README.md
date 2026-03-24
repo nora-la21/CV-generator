@@ -1,56 +1,16 @@
-# CV Generator
+# React + Vite
 
-AI-powered CV tailoring tool for QArea and TestFort.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Features
-- Upload CVs in **PDF** or **DOCX** format
-- Paste a **job description** → AI embeds required skills organically
-- Write **direct instructions** → AI applies changes precisely
-- Export in **QArea** or **TestFort** branded format
-- Download as **DOCX** or **PDF**
+Currently, two official plugins are available:
 
-## Setup
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-### 1. Add company logos
-Place your logo files in:
-- `server/assets/logos/qarea.png`
-- `server/assets/logos/testfort.png`
+## React Compiler
 
-Also copy them to:
-- `client/public/logos/qarea.png`
-- `client/public/logos/testfort.png`
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### 2. Configure environment
-```bash
-cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
-```
+## Expanding the ESLint configuration
 
-### 3. Install dependencies
-```bash
-# Server
-cd server && npm install
-
-# Client
-cd ../client && npm install
-```
-
-### 4. Run
-```bash
-# Terminal 1 — backend
-cd server && node index.js
-
-# Terminal 2 — frontend
-cd client && npm run dev
-```
-
-Open http://localhost:5173
-
-## Optional: Calibri font for PDF
-For best PDF rendering, add Calibri font files to `server/assets/fonts/`:
-- `calibri.ttf`
-- `calibrib.ttf` (bold)
-- `calibrii.ttf` (italic)
-- `calibriz.ttf` (bold italic)
-
-Without them, Helvetica is used as fallback.
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

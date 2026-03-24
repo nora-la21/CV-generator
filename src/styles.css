@@ -469,3 +469,58 @@ body {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* ── API Key Input ───────────────────────────────── */
+.api-key-row {
+  display: flex;
+  gap: 6px;
+}
+
+.api-key-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: monospace;
+  font-size: 12px;
+  background: #fafafa;
+  color: var(--text);
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.icon-btn {
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.save-key-btn {
+  width: 100%;
+  padding: 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.save-key-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.save-key-btn.saved {
+  background: #f1faf1;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
