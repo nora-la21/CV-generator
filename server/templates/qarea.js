@@ -1,0 +1,15 @@
+module.exports = {
+  id: 'qarea',
+  displayName: 'QArea',
+  accentColor: '#E8352A',
+  accentColorHex: 0xE8352A,
+  logoPath: 'assets/logos/qarea.png',
+  footerLeft: 'by QAREA',
+  footerRight: 'www.qarea.com   business@qarea.com',
+  footerBrand: 'QAREA',
+  website: 'www.qarea.com',
+  email: 'business@qarea.com',
+  phone: null,
+  confidentialText: null,
+  decorativeCurves: true,
+};
