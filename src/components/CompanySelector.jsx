@@ -1,4 +1,4 @@
-export default function CompanySelector({ selected, onChange }) {
+export default function CompanySelector({ selected, onChange, autoDetected }) {
   const companies = [
     { id: 'qarea', label: 'QArea', logo: '/logos/qarea.png' },
     { id: 'testfort', label: 'TestFort', logo: '/logos/testfort.png' },
@@ -19,6 +19,9 @@ export default function CompanySelector({ selected, onChange }) {
           </button>
         ))}
       </div>
+      {autoDetected && (
+        <span className="auto-detected-badge">✦ Auto-detected from reference</span>
+      )}
     </div>
   );
 }

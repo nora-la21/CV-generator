@@ -43,11 +43,15 @@ IMPORTANT RULES:
 - Preserve the candidate's authentic voice and real experience
 - skillsTable rows should use category labels ending with colon (e.g., "Backend:")`;
 
-export async function processCV(apiKey, cvText, instructions) {
+export async function processCV(apiKey, cvText, instructions, referenceText = '') {
   const client = new Anthropic({
     apiKey,
     dangerouslyAllowBrowser: true,
   });
+
+  const referenceSection = referenceText
+    ? `REFERENCE CV — match this format exactly:\n---\n${referenceText}\n---\nUse the same section headings, bullet style, table structure, and tone as the reference above.\n\n`
+    : '';
 
   const message = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -56,7 +60,7 @@ export async function processCV(apiKey, cvText, instructions) {
     messages: [
       {
         role: 'user',
-        content: `ORIGINAL CV:\n${cvText}\n\nINSTRUCTIONS:\n${instructions}\n\nApply the instructions and return the result as JSON.`,
+        content: `${referenceSection}ORIGINAL CV:\n${cvText}\n\nINSTRUCTIONS:\n${instructions}\n\nApply the instructions and return the result as JSON.`,
       },
     ],
   });

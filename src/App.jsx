@@ -13,8 +13,12 @@ const STORAGE_KEY = 'cv_generator_api_key';
 export default function App() {
   const [apiKey, setApiKey] = useState(() => localStorage.getItem(STORAGE_KEY) || '');
   const [company, setCompany] = useState('qarea');
+  const [companyAutoDetected, setCompanyAutoDetected] = useState(false);
   const [cvText, setCvText] = useState('');
   const [filename, setFilename] = useState('');
+  const [referenceText, setReferenceText] = useState('');
+  const [referenceFilename, setReferenceFilename] = useState('');
+  const [referenceLoading, setReferenceLoading] = useState(false);
   const [instructions, setInstructions] = useState('');
   const [cvData, setCvData] = useState(null);
   const [parsing, setParsing] = useState(false);
@@ -26,6 +30,25 @@ export default function App() {
   function saveApiKey(key) {
     setApiKey(key);
     localStorage.setItem(STORAGE_KEY, key);
+  }
+
+  async function handleReferenceUpload(file) {
+    setReferenceLoading(true);
+    setReferenceFilename('');
+    setReferenceText('');
+    setCompanyAutoDetected(false);
+    try {
+      const text = await parseCV(file);
+      setReferenceText(text);
+      setReferenceFilename(file.name);
+      const lower = text.toLowerCase();
+      if (lower.includes('qarea')) { setCompany('qarea'); setCompanyAutoDetected(true); }
+      else if (lower.includes('testfort')) { setCompany('testfort'); setCompanyAutoDetected(true); }
+    } catch {
+      // silently ignore — reference is optional
+    } finally {
+      setReferenceLoading(false);
+    }
   }
 
   async function handleUpload(file) {
@@ -56,7 +79,7 @@ export default function App() {
     setGenerating(true);
     setCvData(null);
     try {
-      const data = await processCV(apiKey, cvText, instructions);
+      const data = await processCV(apiKey, cvText, instructions, referenceText);
       setCvData(data);
     } catch (err) {
       const msg = err.status === 401
@@ -116,10 +139,17 @@ export default function App() {
 
       {/* ── Main ── */}
       <main className="main-content">
-        <CompanySelector selected={company} onChange={setCompany} />
+        <CompanySelector selected={company} onChange={(c) => { setCompany(c); setCompanyAutoDetected(false); }} autoDetected={companyAutoDetected} />
 
         <div className="cards-grid">
-          <CVUpload onUpload={handleUpload} filename={filename} loading={parsing} />
+          <CVUpload
+            onUpload={handleUpload}
+            filename={filename}
+            loading={parsing}
+            onReferenceUpload={handleReferenceUpload}
+            referenceFilename={referenceFilename}
+            referenceLoading={referenceLoading}
+          />
           <InstructionsPanel value={instructions} onChange={setInstructions} disabled={generating} />
         </div>
 
