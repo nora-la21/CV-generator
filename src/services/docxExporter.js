@@ -35,7 +35,7 @@ async function getLogoImageRun(logoUrl) {
 function sectionHeading(text) {
   return new Paragraph({
     children: [new TextRun({ text, bold: true, size: 22, font: FONT, color: '000000' })],
-    spacing: { before: 300, after: 120 },
+    spacing: { before: 400, after: 200 },
     border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'CCCCCC' } },
   });
 }
