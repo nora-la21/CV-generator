@@ -28,25 +28,14 @@ export default function CVPreview({ cvData, company, loading }) {
   return (
     <div className="cv-preview-card">
       <div className="cv-document">
-        {isQarea ? (
-          <div style={{ margin: '-48px -56px 24px', height: 105, position: 'relative' }}>
-            <img
-              src={import.meta.env.BASE_URL + t.logoUrl}
-              alt={t.displayName}
-              style={{ position: 'absolute', top: 10, right: 20, height: 85, width: 'auto' }}
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
-          </div>
-        ) : (
-          <div className="cv-doc-header">
-            <img
-              src={import.meta.env.BASE_URL + t.logoUrl}
-              alt={t.displayName}
-              style={{ maxHeight: 44, width: 'auto' }}
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
-          </div>
-        )}
+        <div className="cv-doc-header">
+          <img
+            src={import.meta.env.BASE_URL + t.logoUrl}
+            alt={t.displayName}
+            style={{ height: isQarea ? 85 : 64, width: 'auto' }}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+        </div>
 
         <div className="cv-candidate-name">{cvData.name}</div>
         <div className="cv-candidate-title" style={{ color: t.accentColor }}>{cvData.title}</div>
