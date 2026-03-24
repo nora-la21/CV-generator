@@ -25,7 +25,7 @@ async function loadLogoDataUrl(logoUrl) {
       }
     };
     img.onerror = () => resolve(null);
-    img.src = logoUrl;
+    img.src = import.meta.env.BASE_URL + logoUrl;
   });
 }
 

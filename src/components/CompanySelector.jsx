@@ -1,7 +1,7 @@
 export default function CompanySelector({ selected, onChange }) {
   const companies = [
-    { id: 'qarea', label: 'QArea', logo: '/logos/qarea.png' },
-    { id: 'testfort', label: 'TestFort', logo: '/logos/testfort.png' },
+    { id: 'qarea', label: 'QArea', logo: `${import.meta.env.BASE_URL}logos/qarea.png` },
+    { id: 'testfort', label: 'TestFort', logo: `${import.meta.env.BASE_URL}logos/testfort.png` },
   ];
 
   return (

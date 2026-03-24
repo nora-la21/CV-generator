@@ -18,7 +18,7 @@ async function getLogoImageRun(logoUrl) {
   const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
   if (ext === 'svg') return null;
   try {
-    const res = await fetch(logoUrl);
+    const res = await fetch(import.meta.env.BASE_URL + logoUrl);
     const blob = await res.blob();
     const arrayBuffer = await blob.arrayBuffer();
     const type = ext === 'jpg' ? 'jpeg' : ext;
