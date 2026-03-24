@@ -94,6 +94,7 @@ export default function App() {
         <p className="hero-subtitle">
           Upload your CV, paste the job description — it gets rewritten to match, in seconds.
         </p>
+        <p className="hero-credit">made by Nora Laievska</p>
       </section>
 
       {/* ── Steps ── */}
