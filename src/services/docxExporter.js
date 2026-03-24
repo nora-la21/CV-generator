@@ -60,6 +60,7 @@ function skillsTable(rows) {
   return new Table({
     width: { size: CONTENT_W, type: WidthType.DXA },
     layout: TableLayoutType.FIXED,
+    columnWidths: [col1, col2],
     rows: rows.map(row =>
       new TableRow({
         children: [
