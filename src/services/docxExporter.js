@@ -1,36 +1,16 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
-  WidthType, BorderStyle, AlignmentType, ImageRun, Header, Footer,
+  WidthType, BorderStyle, AlignmentType, Header, Footer,
   ShadingType, convertInchesToTwip,
 } from 'docx';
 
 const FONT = 'Calibri';
 
 // A4 page width minus 0.9" margins on each side (in twips)
-// A4 = 11906 twips wide; margins = 2 × 1296 = 2592; content = 9314
 const CONTENT_W = 9314;
 
 function accentHex(template) {
   return template.accentColor.replace('#', '');
-}
-
-async function getLogoImageRun(logoUrl) {
-  if (!logoUrl) return null;
-  const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
-  if (ext === 'svg') return null; // docx doesn't support SVG
-  try {
-    const res = await fetch(logoUrl);
-    const blob = await res.blob();
-    const arrayBuffer = await blob.arrayBuffer();
-    const type = ext === 'jpg' ? 'jpeg' : ext;
-    return new ImageRun({
-      data: arrayBuffer,
-      transformation: { width: 120, height: 40 },
-      type,
-    });
-  } catch {
-    return null;
-  }
 }
 
 function sectionHeading(text) {
@@ -89,17 +69,14 @@ function skillsTable(rows) {
 export async function exportDOCX(cvData, template) {
   const color = accentHex(template);
 
-  // Header
-  const logoRun = await getLogoImageRun(template.logoUrl);
+  // Header — company name as text
   const headerPara = new Paragraph({
     alignment: AlignmentType.RIGHT,
-    children: logoRun
-      ? [logoRun]
-      : [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
+    children: [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
     spacing: { before: 0, after: 100 },
   });
 
-  // Footer cells with proper DXA widths
+  // Footer
   const noBorder = { style: BorderStyle.NONE };
   const halfW = Math.round(CONTENT_W / 2);
 
@@ -118,7 +95,6 @@ export async function exportDOCX(cvData, template) {
     })] : []),
   ];
 
-  // Split phone by newline into separate paragraphs
   const rightLines = [
     ...(template.email ? [template.email] : []),
     ...(template.phone ? template.phone.split('\n') : []),
@@ -142,22 +118,18 @@ export async function exportDOCX(cvData, template) {
   });
 
   const docChildren = [
-    // Name
     new Paragraph({
       children: [new TextRun({ text: cvData.name, bold: true, size: 52, font: FONT, color: '000000' })],
       spacing: { before: 200, after: 80 },
     }),
-    // Title
     new Paragraph({
       children: [new TextRun({ text: cvData.title, bold: true, size: 24, font: FONT, color })],
       spacing: { after: 240 },
     }),
-    // General Qualification
     sectionHeading('GENERAL QUALIFICATION'),
     ...(cvData.summary || []).map(l => bulletParagraph(l)),
     new Paragraph({ children: [], spacing: { after: 120 } }),
     ...(cvData.skillsTable?.length ? [skillsTable(cvData.skillsTable), new Paragraph({ children: [], spacing: { after: 200 } })] : []),
-    // Employment History
     ...(cvData.employmentHistory?.length ? [
       sectionHeading('EMPLOYMENT HISTORY'),
       ...cvData.employmentHistory.map(job =>
@@ -172,13 +144,11 @@ export async function exportDOCX(cvData, template) {
       ),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
-    // Education
     ...(cvData.education?.length ? [
       sectionHeading('EDUCATION'),
       ...cvData.education.map(e => bulletParagraph(e)),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
-    // Experience / Projects
     ...(cvData.projects?.length ? [
       sectionHeading('EXPERIENCE'),
       ...cvData.projects.flatMap(proj => [
@@ -205,7 +175,6 @@ export async function exportDOCX(cvData, template) {
       ]),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
-    // Additional sections
     ...(cvData.additionalSections || []).flatMap(sec => [
       sectionHeading(sec.title.toUpperCase()),
       ...sec.bullets.map(b => bulletParagraph(b)),
