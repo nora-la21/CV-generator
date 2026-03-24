@@ -2,14 +2,11 @@ import { useState } from 'react';
 
 export default function ApiKeyInput({ apiKey, onSave }) {
   const [value, setValue] = useState(apiKey || '');
-  const [visible, setVisible] = useState(false);
   const [saved, setSaved] = useState(!!apiKey);
+  const [visible, setVisible] = useState(false);
 
   function handleSave() {
-    if (!value.startsWith('sk-ant-')) {
-      alert('That doesn\'t look like a valid Anthropic API key (should start with sk-ant-)');
-      return;
-    }
+    if (!value.trim()) return;
     onSave(value.trim());
     setSaved(true);
   }
@@ -19,30 +16,31 @@ export default function ApiKeyInput({ apiKey, onSave }) {
     setSaved(false);
   }
 
+  function handleKey(e) {
+    if (e.key === 'Enter') handleSave();
+  }
+
   return (
-    <div className="panel-section">
-      <label className="section-label">Anthropic API Key</label>
-      <div className="api-key-row">
-        <input
-          type={visible ? 'text' : 'password'}
-          className="api-key-input"
-          value={value}
-          onChange={handleChange}
-          placeholder="sk-ant-api03-..."
-          autoComplete="off"
-        />
-        <button className="icon-btn" onClick={() => setVisible(v => !v)} title={visible ? 'Hide' : 'Show'}>
-          {visible ? '🙈' : '👁'}
-        </button>
-      </div>
+    <div className="navbar-api">
+      <span className="navbar-api-label">API Key</span>
+      <input
+        type={visible ? 'text' : 'password'}
+        className="navbar-api-input"
+        value={value}
+        onChange={handleChange}
+        onKeyDown={handleKey}
+        placeholder="sk-ant-..."
+        autoComplete="off"
+      />
       <button
-        className={`save-key-btn${saved ? ' saved' : ''}`}
+        className={`navbar-api-save${saved ? ' saved' : ''}`}
         onClick={handleSave}
-        disabled={!value}
+        disabled={!value.trim()}
+        title={visible ? 'Hide key' : 'Show key'}
+        onDoubleClick={() => setVisible(v => !v)}
       >
-        {saved ? '✓ Saved in browser' : 'Save key'}
+        {saved ? '✓ Saved' : 'Save'}
       </button>
-      <p className="instructions-hint">Stored only in your browser (localStorage). Never sent anywhere except Anthropic.</p>
     </div>
   );
 }

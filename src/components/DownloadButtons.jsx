@@ -15,7 +15,6 @@ export default function DownloadButtons({ cvData, company, disabled }) {
       const blob = format === 'docx'
         ? await exportDOCX(cvData, template)
         : await exportPDF(cvData, template);
-
       const safeName = (cvData.name || 'CV').replace(/[^a-zA-Z0-9 ]/g, '').trim().replace(/\s+/g, '_');
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -31,17 +30,16 @@ export default function DownloadButtons({ cvData, company, disabled }) {
   }
 
   return (
-    <div className="panel-section">
-      <span className="section-label">Download</span>
+    <>
       <div className="download-btns">
         <button className="download-btn" onClick={() => download('docx')} disabled={disabled || !!downloading}>
-          {downloading === 'docx' ? '⏳' : '📝'} DOCX
+          {downloading === 'docx' ? '⏳' : '📝'} Download DOCX
         </button>
         <button className="download-btn" onClick={() => download('pdf')} disabled={disabled || !!downloading}>
-          {downloading === 'pdf' ? '⏳' : '📄'} PDF
+          {downloading === 'pdf' ? '⏳' : '📄'} Download PDF
         </button>
       </div>
-      {error && <div className="error-msg">{error}</div>}
-    </div>
+      {error && <div className="error-msg" style={{ marginTop: 8 }}>{error}</div>}
+    </>
   );
 }

@@ -5,21 +5,17 @@ export default function CompanySelector({ selected, onChange }) {
   ];
 
   return (
-    <div className="panel-section">
-      <span className="section-label">Company Template</span>
-      <div className="company-selector">
+    <div className="company-row">
+      <span className="company-row-label">Template</span>
+      <div className="company-btns">
         {companies.map((c) => (
           <button
             key={c.id}
             className={`company-btn${selected === c.id ? ' active' : ''}`}
             onClick={() => onChange(c.id)}
           >
-            <img
-              src={c.logo}
-              alt={c.label}
-              onError={(e) => { e.target.style.display = 'none'; }}
-            />
-            <span>{c.label}</span>
+            <img src={c.logo} alt={c.label} onError={(e) => { e.target.style.display = 'none'; }} />
+            {c.label}
           </button>
         ))}
       </div>

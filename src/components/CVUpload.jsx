@@ -9,8 +9,12 @@ export default function CVUpload({ onUpload, filename, loading }) {
   }
 
   return (
-    <div className="panel-section">
-      <span className="section-label">Upload CV</span>
+    <div className="card">
+      <div className="card-header">
+        <div className="card-icon">📎</div>
+        <h2 className="card-title">Your Current CV</h2>
+      </div>
+
       <div
         className={`upload-zone${dragOver ? ' drag-over' : ''}${filename ? ' has-file' : ''}`}
         onClick={() => !loading && inputRef.current.click()}
@@ -21,15 +25,15 @@ export default function CVUpload({ onUpload, filename, loading }) {
         <input ref={inputRef} type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFiles(e.target.files)} />
         {filename ? (
           <>
-            <div className="upload-icon">✅</div>
+            <div className="upload-icon-wrap">✅</div>
             <p className="file-name">{filename}</p>
-            <p className="change-link">Click to replace</p>
+            <p className="change">Click to replace</p>
           </>
         ) : (
           <>
-            <div className="upload-icon">📄</div>
-            <p><strong>Click to upload</strong> or drag &amp; drop</p>
-            <p style={{ fontSize: '11px', marginTop: '4px' }}>PDF, DOC, DOCX — up to 10MB</p>
+            <div className="upload-icon-wrap">📎</div>
+            <p><strong>Drop your CV here</strong> or click to browse</p>
+            <p className="hint">Supports PDF, DOCX</p>
           </>
         )}
       </div>

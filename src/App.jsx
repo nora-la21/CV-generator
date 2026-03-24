@@ -40,7 +40,7 @@ export default function App() {
       if (!text || text.length < 50) throw new Error('Could not extract readable text. Is the PDF text-based (not scanned)?');
       setCvText(text);
       setFilename(file.name);
-      setParseStatus(`✓ Loaded — ${text.length.toLocaleString()} characters`);
+      setParseStatus(`✓ ${file.name} — ${text.length.toLocaleString()} characters`);
     } catch (err) {
       setParseError(err.message);
     } finally {
@@ -49,10 +49,9 @@ export default function App() {
   }
 
   async function handleGenerate() {
-    if (!apiKey) { setGenerateError('Please enter your Anthropic API key first.'); return; }
+    if (!apiKey) { setGenerateError('Enter your Anthropic API key in the top bar first.'); return; }
     if (!cvText) { setGenerateError('Please upload a CV first.'); return; }
-    if (!instructions.trim()) { setGenerateError('Please enter instructions.'); return; }
-
+    if (!instructions.trim()) { setGenerateError('Please paste a job description or write instructions.'); return; }
     setGenerateError('');
     setGenerating(true);
     setCvData(null);
@@ -61,8 +60,8 @@ export default function App() {
       setCvData(data);
     } catch (err) {
       const msg = err.status === 401
-        ? 'Invalid API key. Please check your Anthropic API key.'
-        : err.message || 'Failed to generate CV. Please try again.';
+        ? 'Invalid API key — please check it in the top bar.'
+        : err.message || 'Something went wrong. Please try again.';
       setGenerateError(msg);
     } finally {
       setGenerating(false);
@@ -71,32 +70,83 @@ export default function App() {
 
   const canGenerate = !!apiKey && !!cvText && !!instructions.trim() && !parsing && !generating;
 
+  // Which steps are "done"
+  const step1done = !!cvText;
+  const step2done = !!instructions.trim();
+  const step3done = !!cvData;
+
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>CV <span className="accent">Generator</span></h1>
-      </header>
-      <div className="app-body">
-        <main className="left-panel">
-          <CVPreview cvData={cvData} company={company} loading={generating} />
-        </main>
-        <aside className="right-panel">
-          <div className="right-panel-inner">
-            <ApiKeyInput apiKey={apiKey} onSave={saveApiKey} />
-            <CompanySelector selected={company} onChange={setCompany} />
-            <CVUpload onUpload={handleUpload} filename={filename} loading={parsing} />
-            {parsing && <div className="status-msg">⏳ Reading CV…</div>}
-            {parseStatus && !parsing && <div className="status-msg">{parseStatus}</div>}
-            {parseError && <div className="error-msg">{parseError}</div>}
-            <InstructionsPanel value={instructions} onChange={setInstructions} disabled={generating} />
-            {generateError && <div className="error-msg">{generateError}</div>}
-            <button className="generate-btn" onClick={handleGenerate} disabled={!canGenerate}>
-              {generating ? 'Generating…' : '✨ Generate CV'}
-            </button>
-            <DownloadButtons cvData={cvData} company={company} disabled={!cvData || generating} />
-          </div>
-        </aside>
+      {/* ── Navbar ── */}
+      <nav className="navbar">
+        <div className="navbar-brand">
+          CV Generator <span className="diamond">✦</span>
+        </div>
+        <ApiKeyInput apiKey={apiKey} onSave={saveApiKey} />
+      </nav>
+
+      {/* ── Hero ── */}
+      <section className="hero">
+        <h1 className="hero-title">
+          Your CV, <span className="italic-accent">tailored</span> for every role
+        </h1>
+        <p className="hero-subtitle">
+          Upload your CV, paste the job description — Claude rewrites it to match, in seconds.
+        </p>
+      </section>
+
+      {/* ── Steps ── */}
+      <div className="steps-bar">
+        <div className={`step${step1done ? ' done' : ''}`}>
+          <span className="step-num">1</span> Upload your CV
+        </div>
+        <div className="step-sep" />
+        <div className={`step${step2done ? ' done' : ''}`}>
+          <span className="step-num">2</span> Paste the job description
+        </div>
+        <div className="step-sep" />
+        <div className={`step${step3done ? ' done' : ''}`}>
+          <span className="step-num">3</span> Click Tailor CV
+        </div>
+        <div className="step-sep" />
+        <div className={`step${step3done ? ' done' : ''}`}>
+          <span className="step-num">4</span> Pick layout &amp; save
+        </div>
       </div>
+
+      {/* ── Main ── */}
+      <main className="main-content">
+        <CompanySelector selected={company} onChange={setCompany} />
+
+        <div className="cards-grid">
+          <CVUpload onUpload={handleUpload} filename={filename} loading={parsing} />
+          <InstructionsPanel value={instructions} onChange={setInstructions} disabled={generating} />
+        </div>
+
+        {parsing && <div className="status-msg" style={{ marginBottom: 16 }}>⏳ Reading CV…</div>}
+        {parseStatus && !parsing && <div className="status-msg" style={{ marginBottom: 16 }}>{parseStatus}</div>}
+        {parseError && <div className="error-msg" style={{ marginBottom: 16 }}>{parseError}</div>}
+
+        {/* ── Generate CTA ── */}
+        <div className="generate-wrap">
+          {generateError && <div className="error-msg">{generateError}</div>}
+          <button className="generate-btn" onClick={handleGenerate} disabled={!canGenerate}>
+            <span className="btn-diamond">✦</span>
+            {generating ? 'Tailoring your CV…' : 'Tailor my CV'}
+          </button>
+        </div>
+
+        {/* ── Result ── */}
+        {(cvData || generating) && (
+          <section className="result-section">
+            <div className="result-header">
+              <h2 className="result-title">Your tailored CV</h2>
+              {cvData && <DownloadButtons cvData={cvData} company={company} disabled={generating} />}
+            </div>
+            <CVPreview cvData={cvData} company={company} loading={generating} />
+          </section>
+        )}
+      </main>
     </div>
   );
 }

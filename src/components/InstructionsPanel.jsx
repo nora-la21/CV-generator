@@ -1,18 +1,19 @@
 export default function InstructionsPanel({ value, onChange, disabled }) {
   return (
-    <div className="panel-section">
-      <label htmlFor="instructions" className="section-label">Instructions</label>
+    <div className="card">
+      <div className="card-header">
+        <div className="card-icon">📋</div>
+        <h2 className="card-title">Job Description</h2>
+      </div>
+
       <textarea
-        id="instructions"
         className="instructions-area"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        placeholder="Paste a job description to tailor this CV to that role, or write specific instructions — e.g.:&#10;• 'Add more emphasis on leadership skills'&#10;• 'Reorder sections — put Education first'&#10;• 'Include a short professional summary'"
+        placeholder={`Paste the full job description here — requirements, responsibilities, company info. The more detail, the better the result.\n\nOr write direct instructions: "add more emphasis on leadership", "reorder sections", "add a professional summary".`}
       />
-      <p className="instructions-hint">
-        Job description? Skills are embedded organically. Direct instructions? Changes applied as written.
-      </p>
+      <p className="char-count">{value.length.toLocaleString()} characters</p>
     </div>
   );
 }
