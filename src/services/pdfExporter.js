@@ -122,32 +122,38 @@ export async function exportPDF(cvData, template) {
   if (cvData.skillsTable?.length) {
     const col1W = contentW * 0.26;
     const col2W = contentW * 0.74;
-    const rowH = 22;
+    const lineH = 13;
+    const padV = 7;
 
     for (const row of cvData.skillsTable) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9.5);
+      const itemLines = doc.splitTextToSize(row.items, col2W - 8);
+      const rowH = Math.max(itemLines.length, 1) * lineH + padV * 2;
+
       checkPageBreak(rowH + 4);
 
-      // Row background
+      // Row background (col1 only)
       doc.setFillColor(TABLE_BG);
-      doc.rect(marginL, y - 14, col1W, rowH, 'F');
+      doc.rect(marginL, y, col1W, rowH, 'F');
 
       // Borders
       doc.setDrawColor('#DDDDDD');
       doc.setLineWidth(0.4);
-      doc.rect(marginL, y - 14, col1W, rowH);
-      doc.rect(marginL + col1W, y - 14, col2W, rowH);
+      doc.rect(marginL, y, col1W, rowH);
+      doc.rect(marginL + col1W, y, col2W, rowH);
 
-      // Category
+      // Category (vertically centred in row)
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9.5);
       doc.setTextColor(BLACK);
-      doc.text(row.category, marginL + 4, y);
+      doc.text(row.category, marginL + 4, y + padV + lineH * 0.75);
 
       // Items
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9.5);
-      const itemLines = doc.splitTextToSize(row.items, col2W - 8);
-      doc.text(itemLines, marginL + col1W + 4, y);
+      doc.setTextColor(BLACK);
+      doc.text(itemLines, marginL + col1W + 4, y + padV + lineH * 0.75, { lineHeightFactor: lineH / 9.5 });
 
       y += rowH;
     }
