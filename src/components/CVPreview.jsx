@@ -75,6 +75,21 @@ export default function CVPreview({ cvData, company, loading }) {
           </>
         )}
 
+        {cvData.projects?.length > 0 && (
+          <>
+            <div className="cv-section-heading">Experience</div>
+            {cvData.projects.map((proj, i) => (
+              <div key={i} className="cv-project">
+                <div className="cv-project-name" style={{ color: t.accentColor }}>{proj.name}</div>
+                {proj.environment && <p className="cv-project-line"><strong>Environment:</strong> {proj.environment}</p>}
+                {proj.description && <p className="cv-project-line"><strong>Description:</strong> {proj.description}</p>}
+                {proj.responsibilities && <p className="cv-project-line"><strong>Responsibilities:</strong> {proj.responsibilities}</p>}
+                {proj.testingTypes && <p className="cv-project-line"><strong>Testing types:</strong> {proj.testingTypes}</p>}
+              </div>
+            ))}
+          </>
+        )}
+
         {cvData.additionalSections?.map((sec, i) => (
           <div key={i}>
             <div className="cv-section-heading">{sec.title.toUpperCase()}</div>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="230" height="68" viewBox="0 0 230 68">
+  <!-- Shield outline: flat top-left, angular notch top-right, tapers to rounded point -->
+  <path d="M4 6 L45 6 L54 15 L54 38 Q54 55 29 65 Q4 55 4 38 Z"
+        fill="none" stroke="#E8352A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- TEST in bold black -->
+  <text x="63" y="46" font-family="Arial Black,Arial,sans-serif" font-size="32" font-weight="900" fill="#1a1a1a">TEST</text>
+  <!-- FORT in bold red -->
+  <text x="141" y="46" font-family="Arial Black,Arial,sans-serif" font-size="32" font-weight="900" fill="#E8352A">FORT</text>
+</svg>

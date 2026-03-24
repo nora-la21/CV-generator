@@ -31,6 +31,15 @@ OUTPUT FORMAT — return ONLY valid JSON, no markdown code blocks, no extra text
   "education": [
     "Bachelor of Computer Science, University Name, 2017"
   ],
+  "projects": [
+    {
+      "name": "Banking web app",
+      "environment": "Web (Windows Chrome, Mac Safari)",
+      "description": "The app helps users perform different banking operations such as currency changes.",
+      "responsibilities": "Requirements analysis, test design, test execution, participating in stand-up meetings.",
+      "testingTypes": "Functional, Regression, UI/UX, Confirmation, Exploratory"
+    }
+  ],
   "additionalSections": [
     { "title": "CERTIFICATIONS", "bullets": ["AWS Certified Developer – 2022"] }
   ]
@@ -40,6 +49,9 @@ IMPORTANT RULES:
 - Use first name + last name initial only (e.g., "John D.") — never full last name
 - Keep "additionalSections" as empty array [] if no extra sections exist
 - Keep "education" as empty array [] if not present in the original CV
+- Keep "projects" as empty array [] if no project/experience details exist in the original CV
+- Extract all projects from the EXPERIENCE section of the original CV into "projects"
+- Each project must have: name, environment, description, responsibilities, testingTypes
 - Preserve the candidate's authentic voice and real experience
 - skillsTable rows should use category labels ending with colon (e.g., "Backend:")`;
 

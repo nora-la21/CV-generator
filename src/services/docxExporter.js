@@ -12,11 +12,12 @@ function accentHex(template) {
 
 async function getLogoImageRun(logoUrl) {
   if (!logoUrl) return null;
+  const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
+  if (ext === 'svg') return null; // docx doesn't support SVG
   try {
     const res = await fetch(logoUrl);
     const blob = await res.blob();
     const arrayBuffer = await blob.arrayBuffer();
-    const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
     const type = ext === 'jpg' ? 'jpeg' : ext;
     return new ImageRun({
       data: arrayBuffer,
@@ -124,6 +125,21 @@ export async function exportDOCX(cvData, template) {
     ...(cvData.education?.length ? [
       sectionHeading('EDUCATION'),
       ...cvData.education.map(e => bulletParagraph(e)),
+      new Paragraph({ children: [], spacing: { after: 200 } }),
+    ] : []),
+    // Experience / Projects
+    ...(cvData.projects?.length ? [
+      sectionHeading('EXPERIENCE'),
+      ...cvData.projects.flatMap(proj => [
+        new Paragraph({
+          children: [new TextRun({ text: proj.name, bold: true, size: 20, font: FONT, color })],
+          spacing: { before: 160, after: 60 },
+        }),
+        ...(proj.environment ? [new Paragraph({ children: [new TextRun({ text: 'Environment: ', bold: true, size: 20, font: FONT }), new TextRun({ text: proj.environment, size: 20, font: FONT })], spacing: { after: 40 } })] : []),
+        ...(proj.description ? [new Paragraph({ children: [new TextRun({ text: 'Description: ', bold: true, size: 20, font: FONT }), new TextRun({ text: proj.description, size: 20, font: FONT })], spacing: { after: 40 } })] : []),
+        ...(proj.responsibilities ? [new Paragraph({ children: [new TextRun({ text: 'Responsibilities: ', bold: true, size: 20, font: FONT }), new TextRun({ text: proj.responsibilities, size: 20, font: FONT })], spacing: { after: 40 } })] : []),
+        ...(proj.testingTypes ? [new Paragraph({ children: [new TextRun({ text: 'Testing types: ', bold: true, size: 20, font: FONT }), new TextRun({ text: proj.testingTypes, size: 20, font: FONT })], spacing: { after: 60 } })] : []),
+      ]),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
     // Additional sections

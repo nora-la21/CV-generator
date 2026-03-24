@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="55" viewBox="0 0 180 55">
+  <!-- Outer rounded square -->
+  <rect x="2" y="2" width="51" height="51" rx="14" ry="14" fill="none" stroke="#E8352A" stroke-width="3"/>
+  <!-- Inner rounded square -->
+  <rect x="9" y="9" width="37" height="37" rx="9" ry="9" fill="none" stroke="#E8352A" stroke-width="2.5"/>
+  <!-- Q letter inside -->
+  <text x="16" y="39" font-family="Arial Black,Arial,sans-serif" font-size="24" font-weight="900" fill="#E8352A">Q</text>
+  <!-- QAREA wordmark -->
+  <text x="63" y="40" font-family="Arial Black,Arial,sans-serif" font-size="29" font-weight="900" fill="#1a1a1a">QAREA</text>
+</svg>
