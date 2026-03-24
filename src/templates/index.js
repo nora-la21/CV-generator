@@ -2,6 +2,7 @@ export const TEMPLATES = {
   qarea: {
     id: 'qarea',
     displayName: 'QArea',
+    logoUrl: '/logos/qarea.png',
     accentColor: '#E8352A',
     footerLeft: 'by QAREA',
     website: 'www.qarea.com',
@@ -12,6 +13,7 @@ export const TEMPLATES = {
   testfort: {
     id: 'testfort',
     displayName: 'TestFort',
+    logoUrl: '/logos/testfort.png',
     accentColor: '#E8352A',
     footerLeft: null,
     website: 'testfort.com',

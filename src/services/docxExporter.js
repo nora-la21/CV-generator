@@ -1,6 +1,6 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
-  WidthType, BorderStyle, AlignmentType, Header, Footer,
+  WidthType, BorderStyle, AlignmentType, ImageRun, Header, Footer,
   ShadingType, convertInchesToTwip,
 } from 'docx';
 
@@ -11,6 +11,25 @@ const CONTENT_W = 9314;
 
 function accentHex(template) {
   return template.accentColor.replace('#', '');
+}
+
+async function getLogoImageRun(logoUrl) {
+  if (!logoUrl) return null;
+  const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
+  if (ext === 'svg') return null;
+  try {
+    const res = await fetch(logoUrl);
+    const blob = await res.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const type = ext === 'jpg' ? 'jpeg' : ext;
+    return new ImageRun({
+      data: arrayBuffer,
+      transformation: { width: 120, height: 40 },
+      type,
+    });
+  } catch {
+    return null;
+  }
 }
 
 function sectionHeading(text) {
@@ -69,10 +88,13 @@ function skillsTable(rows) {
 export async function exportDOCX(cvData, template) {
   const color = accentHex(template);
 
-  // Header — company name as text
+  // Header — logo if available, else company name text
+  const logoRun = await getLogoImageRun(template.logoUrl);
   const headerPara = new Paragraph({
     alignment: AlignmentType.RIGHT,
-    children: [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
+    children: logoRun
+      ? [logoRun]
+      : [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
     spacing: { before: 0, after: 100 },
   });
 

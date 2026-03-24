@@ -7,6 +7,28 @@ const MUTED = '#666666';
 const TABLE_BG = '#F5F5F5';
 const LINE_COLOR = '#CCCCCC';
 
+async function loadLogoDataUrl(logoUrl) {
+  if (!logoUrl) return null;
+  const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
+  if (ext === 'svg') return null;
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg', 0.95));
+      } catch {
+        resolve(null);
+      }
+    };
+    img.onerror = () => resolve(null);
+    img.src = logoUrl;
+  });
+}
+
 export async function exportPDF(cvData, template) {
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const pageW = doc.internal.pageSize.getWidth();
@@ -19,11 +41,18 @@ export async function exportPDF(cvData, template) {
 
   const accent = template.accentColor || ACCENT;
 
-  // ── Company name ──────────────────────────────────
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.setTextColor(accent);
-  doc.text(template.displayName, pageW - marginR, y + 20, { align: 'right' });
+  // ── Logo / company name ────────────────────────────
+  const logoDataUrl = await loadLogoDataUrl(template.logoUrl);
+  if (logoDataUrl) {
+    const logoW = 100;
+    const logoH = 34;
+    doc.addImage(logoDataUrl, 'JPEG', pageW - marginR - logoW, y, logoW, logoH);
+  } else {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(accent);
+    doc.text(template.displayName, pageW - marginR, y + 20, { align: 'right' });
+  }
   y += 50;
 
   // ── Name ──────────────────────────────────────────
