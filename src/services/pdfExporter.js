@@ -75,7 +75,7 @@ export async function exportPDF(cvData, template) {
 
   // ── Helper: section heading ────────────────────────
   function sectionHead(title) {
-    y += 14;
+    y += 22;
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
     doc.setTextColor(BLACK);
@@ -84,7 +84,7 @@ export async function exportPDF(cvData, template) {
     doc.setDrawColor(LINE_COLOR);
     doc.setLineWidth(0.5);
     doc.line(marginL, y, marginL + contentW, y);
-    y += 14;
+    y += 16;
   }
 
   // ── Helper: bullet line ────────────────────────────
@@ -115,7 +115,7 @@ export async function exportPDF(cvData, template) {
     for (const line of cvData.summary) {
       bullet(line);
     }
-    y += 6;
+    y += 14;
   }
 
   // Skills table
@@ -157,7 +157,7 @@ export async function exportPDF(cvData, template) {
 
       y += rowH;
     }
-    y += 10;
+    y += 14;
   }
 
   // ── Employment History ────────────────────────────
@@ -187,7 +187,7 @@ export async function exportPDF(cvData, template) {
       }
       y += 16;
     }
-    y += 10;
+    y += 14;
   }
 
   // ── Additional sections ───────────────────────────
@@ -224,7 +224,7 @@ export async function exportPDF(cvData, template) {
     checkPageBreak(30);
     sectionHead('EDUCATION');
     for (const edu of cvData.education) bullet(edu);
-    y += 10;
+    y += 14;
   }
 
   // ── Footer (last page) ────────────────────────────
