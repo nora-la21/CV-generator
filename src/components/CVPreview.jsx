@@ -81,13 +81,6 @@ export default function CVPreview({ cvData, company, loading }) {
           </>
         )}
 
-        {cvData.education?.length > 0 && (
-          <>
-            <div className="cv-section-heading">Education</div>
-            <ul className="cv-bullets">{cvData.education.map((e, i) => <li key={i}>{e}</li>)}</ul>
-          </>
-        )}
-
         {cvData.projects?.length > 0 && (
           <>
             <div className="cv-section-heading">Experience</div>
@@ -119,6 +112,13 @@ export default function CVPreview({ cvData, company, loading }) {
               ))}
             </ul>
           </div>
+        )}
+
+        {cvData.education?.length > 0 && (
+          <>
+            <div className="cv-section-heading">Education</div>
+            <ul className="cv-bullets">{cvData.education.map((e, i) => <li key={i}>{e}</li>)}</ul>
+          </>
         )}
 
         {isQarea ? (

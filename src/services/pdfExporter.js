@@ -196,14 +196,6 @@ export async function exportPDF(cvData, template) {
     y += 10;
   }
 
-  // ── Education ─────────────────────────────────────
-  if (cvData.education?.length) {
-    checkPageBreak(30);
-    sectionHead('EDUCATION');
-    for (const edu of cvData.education) bullet(edu);
-    y += 10;
-  }
-
   // ── Additional sections ───────────────────────────
   for (const sec of (cvData.additionalSections || [])) {
     checkPageBreak(30);
@@ -231,6 +223,14 @@ export async function exportPDF(cvData, template) {
       y += 16;
     }
     y += 6;
+  }
+
+  // ── Education ─────────────────────────────────────
+  if (cvData.education?.length) {
+    checkPageBreak(30);
+    sectionHead('EDUCATION');
+    for (const edu of cvData.education) bullet(edu);
+    y += 10;
   }
 
   // ── Footer (last page) ────────────────────────────

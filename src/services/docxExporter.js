@@ -172,11 +172,6 @@ export async function exportDOCX(cvData, template) {
       ),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
-    ...(cvData.education?.length ? [
-      sectionHeading('EDUCATION'),
-      ...cvData.education.map(e => bulletParagraph(e, accentHex(template))),
-      new Paragraph({ children: [], spacing: { after: 200 } }),
-    ] : []),
     ...(cvData.projects?.length ? [
       sectionHeading('EXPERIENCE'),
       ...cvData.projects.flatMap(proj => [
@@ -219,6 +214,11 @@ export async function exportDOCX(cvData, template) {
         indent: { left: 360, hanging: 360 },
         spacing: { after: 60 },
       })),
+      new Paragraph({ children: [], spacing: { after: 200 } }),
+    ] : []),
+    ...(cvData.education?.length ? [
+      sectionHeading('EDUCATION'),
+      ...cvData.education.map(e => bulletParagraph(e, accentHex(template))),
       new Paragraph({ children: [], spacing: { after: 200 } }),
     ] : []),
   ];
