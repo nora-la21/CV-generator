@@ -23,18 +23,33 @@ export default function CVPreview({ cvData, company, loading }) {
   }
 
   const t = TEMPLATES[company] || TEMPLATES.qarea;
+  const isQarea = company === 'qarea';
 
   return (
     <div className="cv-preview-card">
       <div className="cv-document">
-        <div className="cv-doc-header">
-          <img
-            src={import.meta.env.BASE_URL + t.logoUrl}
-            alt={t.displayName}
-            style={{ maxHeight: 44, width: 'auto' }}
-            onError={(e) => { e.target.style.display = 'none'; }}
-          />
-        </div>
+        {isQarea ? (
+          <div style={{ margin: '-48px -56px 24px', height: 90, position: 'relative', overflow: 'hidden' }}>
+            <svg viewBox="0 0 595 90" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+              <path d="M 0 68 C 120 -3 330 -3 460 6" fill="none" stroke="#E8352A" strokeWidth="9" strokeLinecap="round"/>
+            </svg>
+            <img
+              src={import.meta.env.BASE_URL + t.logoUrl}
+              alt={t.displayName}
+              style={{ position: 'absolute', top: 13, right: 20, height: 64, width: 'auto' }}
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+          </div>
+        ) : (
+          <div className="cv-doc-header">
+            <img
+              src={import.meta.env.BASE_URL + t.logoUrl}
+              alt={t.displayName}
+              style={{ maxHeight: 44, width: 'auto' }}
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+          </div>
+        )}
 
         <div className="cv-candidate-name">{cvData.name}</div>
         <div className="cv-candidate-title" style={{ color: t.accentColor }}>{cvData.title}</div>
@@ -106,19 +121,34 @@ export default function CVPreview({ cvData, company, loading }) {
           </div>
         )}
 
-        <div className="cv-doc-footer">
-          <div>
-            {t.confidentialText && <div style={{ color: '#999', fontSize: 10, marginBottom: 2 }}>{t.confidentialText}</div>}
-            <div className="footer-brand" style={{ color: t.footerLeft ? '#333' : t.accentColor }}>
-              {t.footerLeft || t.displayName}
+        {isQarea ? (
+          <div style={{ margin: '48px -56px -48px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ padding: '12px 56px 10px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 11, color: '#555' }}>
+              <div>by <strong style={{ color: '#1a1a1a' }}>QAREA</strong></div>
+              <div style={{ display: 'flex', gap: 16 }}>
+                {t.website && <a href={`https://${t.website}`} target="_blank" rel="noreferrer" style={{ color: '#1a6fc4' }}>{t.website}</a>}
+                {t.email && <a href={`mailto:${t.email}`} style={{ color: '#1a6fc4' }}>{t.email}</a>}
+              </div>
             </div>
-            {t.website && <div><a href={`https://${t.website}`} target="_blank" rel="noreferrer">{t.website}</a></div>}
+            <svg viewBox="0 0 595 88" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 88, overflow: 'visible' }}>
+              <path d="M 165 96 C 268 115 490 70 625 38" fill="none" stroke="#CCCCCC" strokeWidth="65" strokeLinecap="round"/>
+            </svg>
           </div>
-          <div className="footer-right" style={{ color: t.accentColor }}>
-            {t.email && <div>{t.email}</div>}
-            {t.phone && t.phone.split('\n').map((p, i) => <div key={i}>{p}</div>)}
+        ) : (
+          <div className="cv-doc-footer">
+            <div>
+              {t.confidentialText && <div style={{ color: '#999', fontSize: 10, marginBottom: 2 }}>{t.confidentialText}</div>}
+              <div className="footer-brand" style={{ color: t.footerLeft ? '#333' : t.accentColor }}>
+                {t.footerLeft || t.displayName}
+              </div>
+              {t.website && <div><a href={`https://${t.website}`} target="_blank" rel="noreferrer">{t.website}</a></div>}
+            </div>
+            <div className="footer-right" style={{ color: t.accentColor }}>
+              {t.email && <div>{t.email}</div>}
+              {t.phone && t.phone.split('\n').map((p, i) => <div key={i}>{p}</div>)}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

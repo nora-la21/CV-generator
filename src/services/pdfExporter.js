@@ -56,6 +56,19 @@ export async function exportPDF(cvData, template) {
     doc.setTextColor(accent);
     doc.text(template.displayName, pageW - marginR, y + 20, { align: 'right' });
   }
+
+  // ── QArea: red arc decoration ──────────────────────
+  if (template.id === 'qarea') {
+    doc.setDrawColor('#E8352A');
+    doc.setLineWidth(9);
+    doc.setLineCap(1); // round
+    // M 0 68 C 120 -3 330 -3 460 6  (absolute coords)
+    doc.lines([[120, -71, 330, -71, 460, -62]], 0, 68, [1, 1], 'S');
+    doc.setLineCap(0);
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(LINE_COLOR);
+  }
+
   y += 50;
 
   // ── Name ──────────────────────────────────────────
@@ -241,20 +254,41 @@ export async function exportPDF(cvData, template) {
     doc.setTextColor(template.footerLeft ? '#333333' : accent);
     doc.text(template.footerLeft || template.displayName, marginL, fy);
 
-    if (template.website) {
+    if (template.id === 'qarea') {
+      // QArea: website + email both on the right
+      const qaLinks = [template.website, template.email].filter(Boolean);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor('#1a6fc4');
+      let rx = marginL + contentW;
+      for (let i = qaLinks.length - 1; i >= 0; i--) {
+        doc.text(qaLinks[i], rx, fy, { align: 'right' });
+        rx -= doc.getTextWidth(qaLinks[i]) + 18;
+      }
+      // Gray arc decoration at bottom
+      doc.setDrawColor('#CCCCCC');
+      doc.setLineWidth(60);
+      doc.setLineCap(1);
+      // M 165 852 C 268 872 490 822 625 790  (absolute, pageH=842)
+      doc.lines([[103, 20, 325, -30, 460, -62]], 165, pageH + 10, [1, 1], 'S');
+      doc.setLineCap(0);
+      doc.setLineWidth(0.5);
+      doc.setDrawColor(LINE_COLOR);
+    } else {
+      if (template.website) {
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(accent);
+        doc.text(template.website, marginL, fy + 12);
+      }
+      const rightParts = [template.email, ...(template.phone ? template.phone.split('\n') : [])].filter(Boolean);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(accent);
-      doc.text(template.website, marginL, fy + 12);
+      rightParts.forEach((part, i) => {
+        doc.text(part.trim(), marginL + contentW, fy + i * 12, { align: 'right' });
+      });
     }
-
-    const rightParts = [template.email, ...(template.phone ? template.phone.split('\n') : [])].filter(Boolean);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    doc.setTextColor(accent);
-    rightParts.forEach((part, i) => {
-      doc.text(part.trim(), marginL + contentW, fy + i * 12, { align: 'right' });
-    });
   }
 
   return doc.output('blob');
