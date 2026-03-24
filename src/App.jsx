@@ -92,7 +92,7 @@ export default function App() {
           Your CV, <span className="italic-accent">tailored</span> for every role
         </h1>
         <p className="hero-subtitle">
-          Upload your CV, paste the job description — Claude rewrites it to match, in seconds.
+          Upload your CV, paste the job description — it gets rewritten to match, in seconds.
         </p>
       </section>
 
