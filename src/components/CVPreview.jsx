@@ -31,10 +31,8 @@ export default function CVPreview({ cvData, company, loading }) {
           <img
             src={t.logoUrl}
             alt={t.displayName}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.insertAdjacentHTML('afterend', `<span class="logo-fallback">${t.displayName}</span>`);
-            }}
+            style={{ maxHeight: 44, width: 'auto' }}
+            onError={(e) => { e.target.style.display = 'none'; }}
           />
         </div>
 

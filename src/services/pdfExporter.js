@@ -10,19 +10,24 @@ const LINE_COLOR = '#CCCCCC';
 async function loadLogoDataUrl(logoUrl) {
   if (!logoUrl) return null;
   const ext = logoUrl.split('.').pop().split('?')[0].toLowerCase();
-  if (ext === 'svg') return null; // jsPDF doesn't support SVG images
-  try {
-    const res = await fetch(logoUrl);
-    const blob = await res.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
-    });
-  } catch {
-    return null;
-  }
+  if (ext === 'svg') return null;
+  // Draw through canvas → JPEG to avoid jsPDF PNG parser issues
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/jpeg', 0.95));
+      } catch {
+        resolve(null);
+      }
+    };
+    img.onerror = () => resolve(null);
+    img.src = logoUrl;
+  });
 }
 
 export async function exportPDF(cvData, template) {
@@ -42,7 +47,7 @@ export async function exportPDF(cvData, template) {
   if (logoDataUrl) {
     const logoW = 100;
     const logoH = 34;
-    doc.addImage(logoDataUrl, 'PNG', pageW - marginR - logoW, y, logoW, logoH);
+    doc.addImage(logoDataUrl, 'JPEG', pageW - marginR - logoW, y, logoW, logoH);
   } else {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
