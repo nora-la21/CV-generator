@@ -57,18 +57,6 @@ export async function exportPDF(cvData, template) {
     doc.text(template.displayName, pageW - marginR, y + 20, { align: 'right' });
   }
 
-  // ── QArea: red arc decoration ──────────────────────
-  if (template.id === 'qarea') {
-    doc.setDrawColor('#E8352A');
-    doc.setLineWidth(9);
-    doc.setLineCap(1); // round
-    // M 0 82 C 110 5 310 2 440 6
-    doc.lines([[110, -77, 310, -80, 440, -76]], 0, 82, [1, 1], 'S');
-    doc.setLineCap(0);
-    doc.setLineWidth(0.5);
-    doc.setDrawColor(LINE_COLOR);
-  }
-
   y += 62;
 
   // ── Name ──────────────────────────────────────────
@@ -265,16 +253,6 @@ export async function exportPDF(cvData, template) {
         doc.text(qaLinks[i], rx, fy, { align: 'right' });
         rx -= doc.getTextWidth(qaLinks[i]) + 18;
       }
-      // Gray arc decoration at bottom — quarter-circle: vertical entry, horizontal exit
-      doc.setDrawColor('#CCCCCC');
-      doc.setLineWidth(58);
-      doc.setLineCap(1);
-      // M 228 (pageH+15) C 228 (pageH+42) 575 (pageH-28) 630 (pageH-28)
-      const arcY = pageH + 15;
-      doc.lines([[0, 27, 347, -43, 402, -43]], 228, arcY, [1, 1], 'S');
-      doc.setLineCap(0);
-      doc.setLineWidth(0.5);
-      doc.setDrawColor(LINE_COLOR);
     } else {
       if (template.website) {
         doc.setFont('helvetica', 'normal');

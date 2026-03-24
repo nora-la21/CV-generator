@@ -29,10 +29,7 @@ export default function CVPreview({ cvData, company, loading }) {
     <div className="cv-preview-card">
       <div className="cv-document">
         {isQarea ? (
-          <div style={{ margin: '-48px -56px 24px', height: 105, position: 'relative', overflow: 'hidden' }}>
-            <svg viewBox="0 0 595 105" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-              <path d="M 0 82 C 110 5 310 2 440 6" fill="none" stroke="#E8352A" strokeWidth="9" strokeLinecap="round"/>
-            </svg>
+          <div style={{ margin: '-48px -56px 24px', height: 105, position: 'relative' }}>
             <img
               src={import.meta.env.BASE_URL + t.logoUrl}
               alt={t.displayName}
@@ -122,17 +119,12 @@ export default function CVPreview({ cvData, company, loading }) {
         )}
 
         {isQarea ? (
-          <div style={{ margin: '48px -56px -48px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ padding: '14px 56px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, color: '#333' }}>
-              <div>by <strong style={{ color: '#1a1a1a' }}>QAREA</strong></div>
-              <div style={{ display: 'flex', gap: 20 }}>
-                {t.website && <a href={`https://${t.website}`} target="_blank" rel="noreferrer" style={{ color: '#1a6fc4' }}>{t.website}</a>}
-                {t.email && <a href={`mailto:${t.email}`} style={{ color: '#1a6fc4' }}>{t.email}</a>}
-              </div>
+          <div style={{ marginTop: 48, paddingTop: 12, borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13, color: '#333' }}>
+            <div>by <strong style={{ color: '#1a1a1a' }}>QAREA</strong></div>
+            <div style={{ display: 'flex', gap: 20 }}>
+              {t.website && <a href={`https://${t.website}`} target="_blank" rel="noreferrer" style={{ color: '#1a6fc4' }}>{t.website}</a>}
+              {t.email && <a href={`mailto:${t.email}`} style={{ color: '#1a6fc4' }}>{t.email}</a>}
             </div>
-            <svg viewBox="0 0 595 90" style={{ display: 'block', width: '100%', height: 90, overflow: 'visible' }}>
-              <path d="M 228 105 C 228 132 575 42 630 42" fill="none" stroke="#CCCCCC" strokeWidth="58" strokeLinecap="round"/>
-            </svg>
           </div>
         ) : (
           <div className="cv-doc-footer">
