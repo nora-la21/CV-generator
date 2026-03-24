@@ -6,7 +6,7 @@ import InstructionsPanel from './components/InstructionsPanel';
 import CVPreview from './components/CVPreview';
 import DownloadButtons from './components/DownloadButtons';
 
-const API = '/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 export default function App() {
   const [company, setCompany] = useState('qarea');
