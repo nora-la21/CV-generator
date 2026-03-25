@@ -1,7 +1,7 @@
 import {
   Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
   WidthType, BorderStyle, AlignmentType, ImageRun, Header, Footer,
-  ShadingType, TableLayoutType, convertInchesToTwip, TabStopType,
+  ShadingType, TableLayoutType, convertInchesToTwip, TabStopType, HeightRule,
 } from 'docx';
 
 const FONT = 'Calibri';
@@ -102,15 +102,18 @@ export async function exportDOCX(cvData, template) {
         width: { size: 100, type: WidthType.PERCENTAGE },
         borders: noBorders,
         rows: [new TableRow({
+          height: { value: convertInchesToTwip(template.id === 'qarea' ? 0.5 : 0.74), rule: HeightRule.EXACT },
           children: [
             new TableCell({
               width: { size: 75, type: WidthType.PERCENTAGE },
               borders: noBorders,
-              children: [new Paragraph({ children: [] })],
+              margins: { top: 0, bottom: 0, left: 0, right: 0 },
+              children: [new Paragraph({ children: [], spacing: { before: 0, after: 0 } })],
             }),
             new TableCell({
               width: { size: 25, type: WidthType.PERCENTAGE },
               borders: noBorders,
+              margins: { top: 0, bottom: 0, left: 0, right: 0 },
               children: [new Paragraph({
                 alignment: AlignmentType.RIGHT,
                 children: [logoRun],
