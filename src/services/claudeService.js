@@ -61,7 +61,47 @@ IMPORTANT RULES:
 - skillsTable rows should use category labels ending with colon (e.g., "Backend:")
 - CRITICAL: all string values must be valid JSON — no unescaped quotes, no literal newlines inside strings`;
 
+const MOCK_CV_DATA = {
+  name: "Jane D.",
+  title: "QA Engineer",
+  summary: [
+    "5+ years of experience in manual and automated testing across web and mobile platforms.",
+    "Proficient in test design, defect lifecycle management, and Agile workflows.",
+  ],
+  skillsTable: [
+    { category: "Testing:", items: "Functional, Regression, Smoke, Exploratory, UI/UX" },
+    { category: "Tools:", items: "Jira, TestRail, Postman, Selenium, Git" },
+    { category: "Languages:", items: "JavaScript, Python (basic)" },
+  ],
+  employmentHistory: [
+    { period: "2021 – Present", role: "Senior QA Engineer at Mock Corp" },
+    { period: "2019 – 2021", role: "QA Engineer at Demo Ltd" },
+  ],
+  education: ["Bachelor of Computer Science, Sample University, 2019"],
+  projects: [
+    {
+      name: "E-commerce Platform",
+      environment: "Web (Chrome, Firefox, Safari)",
+      description: "A large-scale e-commerce platform supporting thousands of daily transactions.",
+      responsibilities: "Requirements analysis, test design, test execution, regression testing, defect reporting.",
+      testingTypes: "Functional, Regression, UI/UX, Smoke, Exploratory",
+    },
+  ],
+  additionalSections: [
+    { title: "CERTIFICATIONS", bullets: ["ISTQB Foundation Level – 2020"] },
+  ],
+  languages: [
+    { language: "English", level: "Upper-Intermediate" },
+    { language: "Ukrainian", level: "Native" },
+  ],
+};
+
 export async function processCV(apiKey, cvText, instructions, referenceText = '') {
+  if (import.meta.env.VITE_DEV_MODE === 'true') {
+    await new Promise((r) => setTimeout(r, 800)); // simulate network delay
+    return MOCK_CV_DATA;
+  }
+
   const client = new Anthropic({
     apiKey,
     dangerouslyAllowBrowser: true,
