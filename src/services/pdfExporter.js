@@ -190,6 +190,52 @@ export async function exportPDF(cvData, template) {
     y += 14;
   }
 
+  // ── Experience (Projects) ─────────────────────────
+  if (cvData.projects?.length) {
+    checkPageBreak(30);
+    sectionHead('EXPERIENCE');
+    for (const proj of cvData.projects) {
+      checkPageBreak(40);
+      // Project name in accent
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(accent);
+      const nameLines = doc.splitTextToSize(proj.name, contentW);
+      doc.text(nameLines, marginL, y);
+      y += nameLines.length * 14 + 2;
+
+      // Helper: bold label + normal value
+      function projLine(label, value) {
+        if (!value) return;
+        checkPageBreak(20);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(BLACK);
+        const lw = doc.getTextWidth(label);
+        doc.text(label, marginL, y);
+        doc.setFont('helvetica', 'normal');
+        const valLines = doc.splitTextToSize(value, contentW - lw);
+        doc.text(valLines[0], marginL + lw, y);
+        if (valLines.length > 1) {
+          y += 14;
+          const rest = doc.splitTextToSize(valLines.slice(1).join(' '), contentW);
+          doc.text(rest, marginL, y);
+          y += rest.length * 14;
+        } else {
+          y += 14;
+        }
+        checkPageBreak(20);
+      }
+
+      projLine('Environment: ', proj.environment);
+      projLine('Description: ', proj.description);
+      projLine('Responsibilities: ', proj.responsibilities);
+      projLine('Testing types: ', proj.testingTypes);
+      y += 6;
+    }
+    y += 8;
+  }
+
   // ── Additional sections ───────────────────────────
   for (const sec of (cvData.additionalSections || [])) {
     checkPageBreak(30);
