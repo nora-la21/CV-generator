@@ -153,7 +153,7 @@ export default function App() {
         )}
       </main>
       <footer className="site-footer">
-        <span className="site-footer__copy">&copy; {new Date().getFullYear()} Nora Laievska. All rights reserved.</span>
+        <span className="site-footer__copy">&copy; {new Date().getFullYear()} Nora Laievska</span>
       </footer>
     </div>
   );
