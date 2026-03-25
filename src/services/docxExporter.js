@@ -103,25 +103,49 @@ export async function exportDOCX(cvData, template) {
     spacing: { before: 0, after: 100 },
   });
 
-  // Footer — single paragraph with right tab stop (avoids table cell sizing bugs)
-  const leftText = template.footerLeft || template.displayName;
-  const rightParts = [
-    ...(template.id === 'qarea' ? [template.website, template.email] : []),
-    ...(template.id !== 'qarea' && template.website ? [template.website] : []),
-    ...(template.id !== 'qarea' && template.email ? [template.email] : []),
-    ...(template.phone ? template.phone.split('\n').map(p => p.trim()) : []),
-  ].filter(Boolean);
-
-  const footerChildren = [
-    new Paragraph({
-      tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_W }],
-      children: [
-        new TextRun({ text: leftText, bold: true, size: 18, color: '333333', font: FONT }),
-        new TextRun({ text: '\t', size: 18, font: FONT }),
-        new TextRun({ text: rightParts.join('   '), size: 16, color: template.id === 'qarea' ? '1a6fc4' : color, font: FONT }),
-      ],
-    }),
-  ];
+  // Footer
+  let footerChildren;
+  if (template.id === 'testfort') {
+    const phones = template.phone ? template.phone.split('\n').map(p => p.trim()).filter(Boolean) : [];
+    footerChildren = [
+      // Row: "TestFort" left, phone numbers right
+      new Paragraph({
+        tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_W }],
+        children: [
+          new TextRun({ text: template.displayName, bold: true, size: 20, color, font: FONT }),
+          new TextRun({ text: '\t', size: 18, font: FONT }),
+          new TextRun({ text: phones[0] || '', size: 18, color, font: FONT }),
+        ],
+        spacing: { after: 0 },
+      }),
+      // website left, second phone right
+      new Paragraph({
+        tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_W }],
+        children: [
+          new TextRun({ text: template.website || '', size: 18, color, font: FONT }),
+          ...(phones[1] ? [
+            new TextRun({ text: '\t', size: 18, font: FONT }),
+            new TextRun({ text: phones[1], size: 18, color, font: FONT }),
+          ] : []),
+        ],
+        spacing: { after: 0 },
+      }),
+    ];
+  } else {
+    // QArea footer — single paragraph with right tab stop
+    const leftText = template.footerLeft || template.displayName;
+    const rightParts = [template.website, template.email].filter(Boolean);
+    footerChildren = [
+      new Paragraph({
+        tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_W }],
+        children: [
+          new TextRun({ text: leftText, bold: true, size: 18, color: '333333', font: FONT }),
+          new TextRun({ text: '\t', size: 18, font: FONT }),
+          new TextRun({ text: rightParts.join('   '), size: 16, color: '1a6fc4', font: FONT }),
+        ],
+      }),
+    ];
+  }
 
   const docChildren = [
     new Paragraph({
