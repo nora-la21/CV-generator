@@ -93,15 +93,38 @@ function skillsTable(rows) {
 export async function exportDOCX(cvData, template) {
   const color = accentHex(template);
 
-  // Header — logo if available, else company name text
+  // Header — logo right-aligned via borderless table (alignment:RIGHT alone is unreliable in Word)
   const logoRun = await getLogoImageRun(template.logoUrl, template.id === 'qarea');
-  const headerPara = new Paragraph({
-    alignment: AlignmentType.RIGHT,
-    children: logoRun
-      ? [logoRun]
-      : [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
-    spacing: { before: 0, after: 100 },
-  });
+  const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+  const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder, insideH: noBorder, insideV: noBorder };
+  const headerChildren = logoRun
+    ? [new Table({
+        width: { size: 100, type: WidthType.PERCENTAGE },
+        borders: noBorders,
+        rows: [new TableRow({
+          children: [
+            new TableCell({
+              width: { size: 75, type: WidthType.PERCENTAGE },
+              borders: noBorders,
+              children: [new Paragraph({ children: [] })],
+            }),
+            new TableCell({
+              width: { size: 25, type: WidthType.PERCENTAGE },
+              borders: noBorders,
+              children: [new Paragraph({
+                alignment: AlignmentType.RIGHT,
+                children: [logoRun],
+                spacing: { before: 0, after: 0 },
+              })],
+            }),
+          ],
+        })],
+      })]
+    : [new Paragraph({
+        alignment: AlignmentType.RIGHT,
+        children: [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
+        spacing: { before: 0, after: 100 },
+      })];
 
   // Footer
   let footerChildren;
@@ -228,7 +251,7 @@ export async function exportDOCX(cvData, template) {
 
   const doc = new Document({
     sections: [{
-      headers: { default: new Header({ children: [headerPara] }) },
+      headers: { default: new Header({ children: headerChildren }) },
       footers: {
         default: new Footer({
           children: [
