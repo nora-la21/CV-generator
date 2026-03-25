@@ -9,6 +9,8 @@ INSTRUCTION TYPE DETECTION:
 JOB DESCRIPTION MODE:
 - Extract the key required skills, technologies, and competencies from the job description
 - Organically embed them into the CV where relevant — reword existing bullet points, expand skills sections, adjust the title/summary to align
+- Convert work examples and project descriptions to reflect the required technology stack: if a candidate worked on a similar type of project using different technologies, reframe the description to highlight the relevant stack from the job description (e.g., if the job requires React but the candidate used Vue, reframe the front-end work using React terminology where it genuinely applies)
+- Replace or rephrase irrelevant or outdated skills in the skills table to match the target stack — keep only what aligns with the role or can be legitimately reframed
 - Do NOT fabricate experience the candidate doesn't have. Only emphasize or reframe what is already there
 - Ensure the CV reads naturally — not keyword-stuffed
 
