@@ -24,7 +24,7 @@ async function getLogoImageRun(logoUrl, isQarea = false) {
     const type = ext === 'jpg' ? 'jpeg' : ext;
     return new ImageRun({
       data: arrayBuffer,
-      transformation: { width: isQarea ? 160 : 180, height: isQarea ? 48 : 65 },
+      transformation: { width: isQarea ? 160 : 90, height: isQarea ? 48 : 71 },
       type,
     });
   } catch {
