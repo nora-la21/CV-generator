@@ -98,31 +98,35 @@ export async function exportDOCX(cvData, template) {
   const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
   const noBorders = { top: noBorder, bottom: noBorder, left: noBorder, right: noBorder, insideH: noBorder, insideV: noBorder };
   const headerChildren = logoRun
-    ? [new Table({
-        width: { size: 100, type: WidthType.PERCENTAGE },
-        borders: noBorders,
-        rows: [new TableRow({
-          height: { value: convertInchesToTwip(template.id === 'qarea' ? 0.5 : 0.74), rule: HeightRule.EXACT },
-          children: [
-            new TableCell({
-              width: { size: 75, type: WidthType.PERCENTAGE },
-              borders: noBorders,
-              margins: { top: 0, bottom: 0, left: 0, right: 0 },
-              children: [new Paragraph({ children: [], spacing: { before: 0, after: 0 } })],
-            }),
-            new TableCell({
-              width: { size: 25, type: WidthType.PERCENTAGE },
-              borders: noBorders,
-              margins: { top: 0, bottom: 0, left: 0, right: 0 },
-              children: [new Paragraph({
-                alignment: AlignmentType.RIGHT,
-                children: [logoRun],
-                spacing: { before: 0, after: 0 },
-              })],
-            }),
-          ],
-        })],
-      })]
+    ? [
+        new Table({
+          width: { size: 100, type: WidthType.PERCENTAGE },
+          borders: noBorders,
+          rows: [new TableRow({
+            height: { value: convertInchesToTwip(template.id === 'qarea' ? 0.5 : 0.74), rule: HeightRule.EXACT },
+            children: [
+              new TableCell({
+                width: { size: 75, type: WidthType.PERCENTAGE },
+                borders: noBorders,
+                margins: { top: 0, bottom: 0, left: 0, right: 0 },
+                children: [new Paragraph({ children: [], spacing: { before: 0, after: 0 } })],
+              }),
+              new TableCell({
+                width: { size: 25, type: WidthType.PERCENTAGE },
+                borders: noBorders,
+                margins: { top: 0, bottom: 0, left: 0, right: 0 },
+                children: [new Paragraph({
+                  alignment: AlignmentType.RIGHT,
+                  children: [logoRun],
+                  spacing: { before: 0, after: 0 },
+                })],
+              }),
+            ],
+          })],
+        }),
+        // Collapse Word's mandatory trailing header paragraph to near-zero height
+        new Paragraph({ children: [new TextRun({ text: '', size: 2 })], spacing: { before: 0, after: 0 } }),
+      ]
     : [new Paragraph({
         alignment: AlignmentType.RIGHT,
         children: [new TextRun({ text: template.displayName, bold: true, size: 28, color, font: FONT })],
